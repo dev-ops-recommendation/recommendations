@@ -12,7 +12,7 @@ The `recommendations resource` is a representation a product recommendation base
 ## Team Member
 * [Mandy Xu](https://github.com/mandy-cmd)
 * [Sarah Lin](https://github.com/procrasprincess)
-* Kefei Wu
+* [Kefei Wu](https://github.com/Aurora1024)
 * [Vipul Goyal](https://github.com/vg2134)
 * Yuyin Zhang
 
