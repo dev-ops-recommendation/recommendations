@@ -12,13 +12,13 @@ The `recommendations resource` is a representation a product recommendation base
 ## Requirements 
 This is the list of expected functions:
 
-List Resources
-Read a Resource
-Create a Resource
-Update a Resource
-Delete a Resource
-Query Resources by some attribute of the Resource
-Perform some stateful Action on the Resource
+* List Resources
+* Read a Resource
+* Create a Resource
+* Update a Resource
+* Delete a Resource
+* Query Resources by some attribute of the Resource
+* Perform some stateful Action on the Resource
 
 ## Team Member
 * [Mandy Xu](https://github.com/mandy-cmd)
