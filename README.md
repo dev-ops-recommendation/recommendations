@@ -25,5 +25,5 @@ This is the list of expected functions:
 * [Sarah Lin](https://github.com/procrasprincess)
 * [Kefei Wu](https://github.com/Aurora1024)
 * [Vipul Goyal](https://github.com/vg2134)
-* Yuyin Zhang
+* [Yuyin Zhang](https://github.com/zyy9871)
 
