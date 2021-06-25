@@ -4,6 +4,7 @@ Models for YourResourceModel
 All of the models are stored in this module
 """
 import logging
+from enum import Enum
 from flask_sqlalchemy import SQLAlchemy
 
 logger = logging.getLogger("flask.app")
@@ -17,8 +18,16 @@ class DataValidationError(Exception):
 
     pass
 
+class Type(Enum):
+    """ Enumeration of valid Pet Genders """
 
-class YourResourceModel(db.Model):
+    GO_TOGETHER = 0
+    CROSS_SELL = 1
+    UP_SELL = 2
+    ACCESSORY = 3
+    
+
+class Relationship(db.Model):
     """
     Class that represents a <your resource model name>
     """
@@ -26,18 +35,17 @@ class YourResourceModel(db.Model):
     app = None
 
     # Table Schema
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(63))
-
+    product_id1 = db.Column(db.Integer, primary_key=True)
+    product_id2 = db.Column(db.Integer, primary_key=True)
+    relationship = db.Enum(Type), nullable=False, server_default=(Type.GO_TOGETHER.name)
     def __repr__(self):
-        return "<YourResourceModel %r id=[%s]>" % (self.name, self.id)
+        return "<Recommendation %r product_id1=[%s] product_id2=[%s]>" % (self.relationship, self.product_id1, self.product_id2)
 
     def create(self):
         """
         Creates a YourResourceModel to the database
         """
-        logger.info("Creating %s", self.name)
-        self.id = None  # id must be none to generate next primary key
+        logger.info("Creating %s between %s and %s", self.relationship, self.product_id1, self.product_id2)
         db.session.add(self)
         db.session.commit()
 
@@ -56,17 +64,19 @@ class YourResourceModel(db.Model):
 
     def serialize(self):
         """ Serializes a YourResourceModel into a dictionary """
-        return {"id": self.id, "name": self.name}
+        return {"product_id1": self.product_id1, "product_id2": self.product_id2, "relationship": self.relationship}
 
     def deserialize(self, data):
         """
-        Deserializes a YourResourceModel from a dictionary
+        Deserializes a Relationship from a dictionary
 
         Args:
             data (dict): A dictionary containing the resource data
         """
         try:
-            self.name = data["name"]
+            self.product_id1 = data["product_id1"]
+            self.product_id2 = data["product_id2"]
+            self.relationship = data["relationship"]
         except KeyError as error:
             raise DataValidationError(
                 "Invalid YourResourceModel: missing " + error.args[0]
