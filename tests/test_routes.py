@@ -74,6 +74,23 @@ class TestRecommendationServer(TestCase):
         resp = self.app.get("/")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
 
+    def test_get_recommendation(self):
+        """ Get a single Recommendation """
+        # get the id of a pet
+        test_recommendation = self._create_recommendations(1)[0]
+        resp = self.app.get(
+            "/recommendations/products/{}/related-products/{}".format(test_recommendation.product_id1, test_recommendation.product_id2), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(data["relationship"], test_recommendation.relationship.name)
+    
+    def test_get_recommendation_not_found(self):
+        """ Get a Recommendation thats not found """
+        resp = self.app.get("/recommendations/products/0/related-products/0")
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
+
     def test_create_recommendation(self):
         """ Create a new recommendation """
         test_recommendation = RecommendationFactory()
@@ -82,7 +99,9 @@ class TestRecommendationServer(TestCase):
             "/recommendations", json=test_recommendation.serialize(), content_type="application/json"
         )  
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
-
+        # Make sure location header is set
+        location = resp.headers.get("Location", None)
+        self.assertIsNotNone(location)
         # Check the data is correct
         new_recommendation = resp.get_json()
         self.assertEqual(new_recommendation["product_id1"], test_recommendation.product_id1, "product id1 does not match")
@@ -104,7 +123,7 @@ class TestRecommendationServer(TestCase):
         )  
         self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_create_recommendation_no_content_type(self):
+    def test_create_pet_no_content_type(self):
         """ Create a Recommendation with no content type """
         resp = self.app.post("/recommendations")
         self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
