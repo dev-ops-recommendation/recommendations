@@ -5,15 +5,17 @@ Describe what your service does here
 """
 
 import os
+
 import sys
 import logging
 from flask import Flask, jsonify, request, url_for, make_response, abort
-from flask_api import status  # HTTP Status Codes
+from . import status  # HTTP Status Codes
+from werkzeug.exceptions import NotFound, BadRequest
 
 # For this example we'll use SQLAlchemy, a popular ORM that supports a
 # variety of backends including SQLite, MySQL, and PostgreSQL
 from flask_sqlalchemy import SQLAlchemy
-from service.models import YourResourceModel, DataValidationError
+from service.models import Recommendation
 
 # Import Flask application
 from . import app
@@ -38,4 +40,35 @@ def index():
 def init_db():
     """ Initialies the SQLAlchemy app """
     global app
-    YourResourceModel.init_db(app)
+    Recommendation.init_db(app)
+
+
+######################################################################
+# ADD A NEW RECOMMENDATION (RELATIONSHIP BETWEEN PRODUCTS)
+######################################################################
+@app.route("/recommendations", methods=["POST"])
+def create_recommendations():
+    """
+    Creates a relationship
+    This endpoint will create a relationship based the data in the body that is posted
+    """
+    app.logger.info("Request to create a ")
+    check_content_type("application/json")
+    recommendation = Recommendation()
+    recommendation.deserialize(request.get_json())
+    try:
+        recommendation.create()
+    except:
+        raise BadRequest("Cannot create relationship between product {} and {}".format(recommendation.product_id1, recommendation.product_id2))
+
+    message = recommendation.serialize()
+    return make_response(
+        jsonify(message), status.HTTP_201_CREATED
+    )
+
+def check_content_type(content_type):
+    """ Checks that the media type is correct """
+    if "Content-Type" in request.headers and request.headers["Content-Type"] == content_type:
+        return
+    app.logger.error("Invalid Content-Type: [%s]", request.headers.get("Content-Type"))
+    abort(status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, "Content-Type must be {}".format(content_type))
