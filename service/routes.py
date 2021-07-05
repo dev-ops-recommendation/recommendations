@@ -62,9 +62,23 @@ def create_recommendations():
         raise BadRequest("Cannot create relationship between product {} and {}".format(recommendation.product_id1, recommendation.product_id2))
 
     message = recommendation.serialize()
+    location_url = url_for("get_recommendations", product_id1=recommendation.product_id1, product_id2=recommendation.product_id2, _external=True)
     return make_response(
-        jsonify(message), status.HTTP_201_CREATED
+        jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
     )
+##############################################################
+@app.route("/recommendations/products/<int:product_id1>/related-products/<int:product_id2>", methods=["GET"])
+def get_recommendations(product_id1, product_id2):
+    """
+    Retrieve recommendations for (product_id1, product_id2)
+
+    This endpoint will return a relationship between two product ids. 
+    """
+    app.logger.info("Request for relationship between product ids: %s %s", product_id1, product_id2)
+    recommendation = Recommendation.find(product_id1, product_id2)
+    if not recommendation:
+        raise NotFound("Recommendation for product id {} and {} was not found.".format(product_id1, product_id2))
+    return make_response(jsonify(recommendation.serialize()), status.HTTP_200_OK)
 
 @app.route("/recommendations/<int:product_id1>/related-products/<int:product_id2>", methods=["DELETE"])
 def delete_recommendations(product_id1, product_id2):

@@ -73,7 +73,7 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertIn("relationship", data)
         self.assertEqual(data["relationship"], recommendation.relationship.name)
 
-    def test_deserialize_a_pet(self):
+    def test_deserialize_a_recommendation(self):
         """ Test deserialization of a Recommendation """
         data = {
             "product_id1": 1,
@@ -98,5 +98,20 @@ class TestRecommendationModel(unittest.TestCase):
         data = "this is not a dictionary"
         recommendation = Recommendation()
         self.assertRaises(DataValidationError, recommendation.deserialize, data)
+
+
+    def test_find_recommendation_type(self):
+        """Find a recommendation type by two product ids"""
+        recommendations = RecommendationFactory.create_batch(2)
+        for recommendation in recommendations:
+            recommendation.create()
+        logging.debug(recommendations)
+
+        # find the 2nd recommendation in the list
+        recommendation = Recommendation.find(recommendations[1].product_id1, recommendations[1].product_id2)
+        self.assertIsNot(recommendation, None)
+        self.assertEqual(recommendation.product_id1, recommendations[1].product_id1)
+        self.assertEqual(recommendation.product_id2, recommendations[1].product_id2)
+        self.assertEqual(recommendation.relationship, recommendations[1].relationship)
 
     
