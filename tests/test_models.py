@@ -57,9 +57,9 @@ class TestRecommendationModel(unittest.TestCase):
         """ Delete a recommendation from the database """
         recommendation = RecommendationFactory()
         recommendation.create()
-        self.assertEqual(len(Recommendation.query.all()), 1)
+        self.assertEqual(len(Recommendation.all()), 1)
         recommendation.delete()
-        self.assertEqual(len(Recommendation.query.all()), 0)
+        self.assertEqual(len(Recommendation.all()), 0)
 
     def test_serialize_a_recommendation(self):
         """ Test serialization of a Recommendation """

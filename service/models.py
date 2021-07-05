@@ -95,8 +95,13 @@ class Recommendation(db.Model):
         db.create_all()  # make our sqlalchemy tables
 
     @classmethod
+    def all(cls):
+        """ Returns all of the records in the database """
+        logger.info("Processing all records")
+        return cls.query.all()
+
+    @classmethod
     def find(cls, product_id1, product_id2):
         """ Finds relationship between two product ids """
         logger.info("Processing lookup for id %s %s", product_id1, product_id2)
         return cls.query.get((product_id1, product_id2))
-        
