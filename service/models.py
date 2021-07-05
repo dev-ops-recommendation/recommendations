@@ -26,7 +26,9 @@ class Type(Enum):
     UP_SELL = 2
     ACCESSORY = 3
     
-
+### -----------------------------------------------------------
+### CLASS RECOMMENDATION
+### -----------------------------------------------------------
 class Recommendation(db.Model):
     """
     Class that represents a relationship/recommendation
@@ -40,6 +42,9 @@ class Recommendation(db.Model):
     relationship = db.Column(
         db.Enum(Type), nullable=False, server_default=(Type.GO_TOGETHER.name)
         )
+    ### -----------------------------------------------------------
+    ### INSTANCE METHODS
+    ### -----------------------------------------------------------
     def __repr__(self):
         return "<Recommendation %r product_id1=[%s] product_id2=[%s]>" % (self.relationship, self.product_id1, self.product_id2)
 
@@ -75,6 +80,10 @@ class Recommendation(db.Model):
                 "Invalid YourResourceModel: body of request contained bad or no data"
             )
         return self
+    
+    ### -----------------------------------------------------------
+    ### CLASS METHODS
+    ### -----------------------------------------------------------
 
     @classmethod
     def init_db(cls, app):
@@ -85,3 +94,33 @@ class Recommendation(db.Model):
         db.init_app(app)
         app.app_context().push()
         db.create_all()  # make our sqlalchemy tables
+    
+
+    @classmethod
+    def all(cls):
+        """ Returns all of the Recommendation in the database """
+        logger.info("Processing all Recommendations")
+        return cls.query.all()
+
+
+    @classmethod
+    def find_by_recommendation_type(cls, recommendation_type):
+        """Returns all recommendations with the given recommendation_type
+
+        Args:
+            recommendation_type (string): the recommendation_type of the Recommendations you want to match
+        """
+        logger.info("Processing recommendation_type query for %s ...",
+                    recommendation_type)
+        return cls.query.filter(cls.recommendation_type == recommendation_type)
+
+
+    @classmethod
+    def find_by_active(cls, active):
+        """Returns all Recommendations with the given active
+        Args:
+           Active (boolean): True for recommendations that are available
+        """
+        logger.info("Processing active query for %s ...",
+                    active)
+        return cls.query.filter(cls.active == active)
