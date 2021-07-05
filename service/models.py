@@ -51,6 +51,15 @@ class Recommendation(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def update(self):
+        """
+        update a recommendation type to the database
+        """
+        if not self.relationship:
+            raise DataValidationError("Update called with empty relationship")
+        logger.info("updating relationship between %s and %s", self.product_id1, self.product_id2)
+        db.session.commit()
+
     def serialize(self):
         """ Serializes a YourResourceModel into a dictionary """
         return {"product_id1": self.product_id1, "product_id2": self.product_id2, "relationship": self.relationship.name}

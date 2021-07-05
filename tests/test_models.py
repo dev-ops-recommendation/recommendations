@@ -106,4 +106,19 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEqual(recommendation.product_id2, recommendations[1].product_id2)
         self.assertEqual(recommendation.relationship, recommendations[1].relationship)
 
-    
+    def test_update_a_recommendation(self):
+        """Update a recommendation type by two product ids"""
+        recommendation = RecommendationFactory()
+        logging.debug(recommendation)
+        recommendation.create()
+        logging.debug(recommendation)
+        recommendation.relationship.name = 'CROSS_SELL'
+        recommendation.update()
+        self.assertIsNot(recommendation, None)
+        self.assertEqual(recommendation.relationship.name, 'CROSS_SELL')
+        recommendations = recommendation.all()
+        self.assertEqual(len(recommendations), 1)
+        self.assertEqual(recommendations[0].product_id1, recommendation.product_id1)
+        self.assertEqual(recommendations[0].product_id2, recommendation.product_id2)
+        self.assertEqual(recommendations[0].relationship, recommendation.relationship)
+

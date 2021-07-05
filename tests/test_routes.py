@@ -128,3 +128,21 @@ class TestRecommendationServer(TestCase):
         resp = self.app.post("/recommendations")
         self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
+    def test_update_recommendation(self):
+        """Update an existing recommendation"""
+        # create a recommendation to update
+        test_recommendation = RecommendationFactory()
+        logging.debug(test_recommendation)
+        resp = self.app.post(
+            "/recommendations", json=test_recommendation.serialize(), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        # update the recommendation
+        new_recommendation = resp.get_json()
+        logging.debug(new_recommendation)
+        new_recommendation["relationship"] = "CROSS_SELL"
+        resp = self.app.put("/recommendations")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        updated_recommendation = resp.get_json()
+        self.assertEqual(updated_recommendation["relationship"], 1)
