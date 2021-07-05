@@ -21,7 +21,7 @@ from service.models import Recommendation, Type
 
 
 class RecommendationFactory(factory.Factory):
-    """ Creates fake pets that you don't have to feed """
+    """ Creates fake recommendations that you don't have to feed """
 
     class Meta:
         model = Recommendation
@@ -29,3 +29,5 @@ class RecommendationFactory(factory.Factory):
     product_id1 = FuzzyChoice(choices=[1, 2, 3, 4])
     product_id2 = FuzzyChoice(choices=[5, 6, 7, 8])
     relationship = FuzzyChoice(choices=[Type.UP_SELL, Type.CROSS_SELL, Type.ACCESSORY])
+    recommendation_type = FuzzyChoice(choices=["Add-on", "Similar", "Frequently Bought Together", "Bundle"])
+    active = FuzzyChoice(choices=[True, False])
