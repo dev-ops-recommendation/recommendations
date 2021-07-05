@@ -51,6 +51,14 @@ class Recommendation(db.Model):
         db.session.add(self)
         db.session.commit()
 
+    def delete(self):
+        """
+        Removes a recommendation type from the database
+        """
+        logger.info("Deleting %s between %s and %s", self.relationship, self.product_id1, self.product_id2)
+        db.session.delete(self)
+        db.session.commit()
+
     def serialize(self):
         """ Serializes a YourResourceModel into a dictionary """
         return {"product_id1": self.product_id1, "product_id2": self.product_id2, "relationship": self.relationship.name}
