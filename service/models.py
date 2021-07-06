@@ -51,6 +51,16 @@ class Recommendation(db.Model):
         db.session.add(self)
         db.session.commit()
 
+
+    def update(self):
+        """
+        update a recommendation type to the database
+        """
+        if not self.relationship:
+            raise DataValidationError("Update called with empty relationship")
+        logger.info("updating relationship between %s and %s", self.product_id1, self.product_id2)
+        db.session.commit()
+
     def delete(self):
         """
         Removes a recommendation type from the database
@@ -105,3 +115,10 @@ class Recommendation(db.Model):
         """ Finds relationship between two product ids """
         logger.info("Processing lookup for id %s %s", product_id1, product_id2)
         return cls.query.get((product_id1, product_id2))
+
+    @classmethod
+    def all(cls):
+        """Returns all of the Pets in the database"""
+        logger.info("Processing all recommendation")
+        return cls.query.all()
+

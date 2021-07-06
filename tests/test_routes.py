@@ -11,8 +11,9 @@ from tests.factories import RecommendationFactory
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
 from service import status  # HTTP Status Codes
-from service.models import db, Recommendation
+from service.models import db, Recommendation, Type
 from service.routes import app
+import json
 
 BASE_URL = "/recommendations"
 CONTENT_TYPE_JSON = "application/json"
@@ -143,3 +144,41 @@ class TestRecommendationServer(TestCase):
         resp = self.app.post("/recommendations")
         self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
+    def test_update_recommendation(self):
+        """Update an existing recommendation"""
+        # create a recommendation to update
+        test_recommendation = RecommendationFactory()
+        logging.debug(test_recommendation)
+        resp = self.app.post(
+            "/recommendations", json=test_recommendation.serialize(), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        # update the recommendation
+        new_recommendation = resp.get_json()
+        new_recommendation["relationship"] = "CROSS_SELL"
+        logging.debug(new_recommendation)
+        resp = self.app.put(
+            "/recommendations/products/{}/related-products/{}".format(test_recommendation.product_id1,
+                                                                      test_recommendation.product_id2),
+            json=new_recommendation,
+            content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        updated_recommendation = resp.get_json()
+        self.assertEqual(updated_recommendation["relationship"], "CROSS_SELL")
+
+    def test_update_recommendation_not_found(self):
+        """ update a Recommendation that is not found """
+        test_recommendation = RecommendationFactory()
+        test_recommendation.product_id1 = 0
+        test_recommendation.product_id2 = 0
+        logging.debug(test_recommendation)
+        resp = self.app.put("/recommendations/products/0/related-products/0",json=test_recommendation.serialize(),
+            content_type="application/json")
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_update_recommendation_no_content_type(self):
+        """ create a Recommendation with no content type """
+        resp = self.app.put("/recommendations/products/0/related-products/0")
+        self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)

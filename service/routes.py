@@ -15,7 +15,7 @@ from werkzeug.exceptions import NotFound, BadRequest
 # For this example we'll use SQLAlchemy, a popular ORM that supports a
 # variety of backends including SQLite, MySQL, and PostgreSQL
 from flask_sqlalchemy import SQLAlchemy
-from service.models import Recommendation
+from service.models import Recommendation,Type
 
 # Import Flask application
 from . import app
@@ -79,6 +79,27 @@ def get_recommendations(product_id1, product_id2):
     if not recommendation:
         raise NotFound("Recommendation for product id {} and {} was not found.".format(product_id1, product_id2))
     return make_response(jsonify(recommendation.serialize()), status.HTTP_200_OK)
+
+
+@app.route("/recommendations/products/<int:product_id1>/related-products/<int:product_id2>", methods=["PUT"])
+def update_recommendations(product_id1, product_id2):
+    """
+    update a relationship
+    This endpoint will update a relationship based the data in the body that is posted
+    """
+    app.logger.info("Request to update a ")
+    check_content_type("application/json")
+    recommendation = Recommendation()
+    recommendation.deserialize(request.get_json())
+    old_recommendation = recommendation.find(product_id1, product_id2)
+    if not old_recommendation:
+        raise NotFound("Recommendation for product id {} and {} was not found.".format(product_id1, product_id2))
+    old_recommendation.relationship = recommendation.relationship
+    recommendation.update()
+    message = old_recommendation.serialize()
+    return make_response(
+        jsonify(message), status.HTTP_200_OK
+    )
 
 @app.route("/recommendations/products/<int:product_id1>/related-products/<int:product_id2>", methods=["DELETE"])
 def delete_recommendations(product_id1, product_id2):
