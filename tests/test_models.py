@@ -123,4 +123,13 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEqual(recommendations[0].product_id2, recommendation.product_id2)
         self.assertEqual(recommendations[0].relationship, recommendation.relationship)
 
+    def test_update_a_recommendation_no_realtionship(self):
+        """Update a recommendation type by two product ids"""
+        recommendation = RecommendationFactory()
+        logging.debug(recommendation)
+        recommendation.create()
+        logging.debug(recommendation)
+        recommendation.relationship = None
+        self.assertRaises(DataValidationError, recommendation.update)
+
 
