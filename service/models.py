@@ -51,6 +51,7 @@ class Recommendation(db.Model):
         db.session.add(self)
         db.session.commit()
 
+
     def update(self):
         """
         update a recommendation type to the database
@@ -58,6 +59,14 @@ class Recommendation(db.Model):
         if not self.relationship:
             raise DataValidationError("Update called with empty relationship")
         logger.info("updating relationship between %s and %s", self.product_id1, self.product_id2)
+        db.session.commit()
+
+    def delete(self):
+        """
+        Removes a recommendation type from the database
+        """
+        logger.info("Deleting %s between %s and %s", self.relationship, self.product_id1, self.product_id2)
+        db.session.delete(self)
         db.session.commit()
 
     def serialize(self):
@@ -96,6 +105,12 @@ class Recommendation(db.Model):
         db.create_all()  # make our sqlalchemy tables
 
     @classmethod
+    def all(cls):
+        """ Returns all of the records in the database """
+        logger.info("Processing all records")
+        return cls.query.all()
+
+    @classmethod
     def find(cls, product_id1, product_id2):
         """ Finds relationship between two product ids """
         logger.info("Processing lookup for id %s %s", product_id1, product_id2)
@@ -106,3 +121,4 @@ class Recommendation(db.Model):
         """Returns all of the Pets in the database"""
         logger.info("Processing all recommendation")
         return cls.query.all()
+

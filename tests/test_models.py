@@ -53,6 +53,14 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEquals(recommendation.product_id1, 1)
         self.assertEquals(recommendation.product_id2, 2)
 
+    def test_delete_a_recommendation(self): 
+        """ Delete a recommendation from the database """
+        recommendation = RecommendationFactory()
+        recommendation.create()
+        self.assertEqual(len(Recommendation.all()), 1)
+        recommendation.delete()
+        self.assertEqual(len(Recommendation.all()), 0)
+
     def test_serialize_a_recommendation(self):
         """ Test serialization of a Recommendation """
         recommendation = Recommendation(product_id1=1, product_id2=2, relationship=Type.UP_SELL)
