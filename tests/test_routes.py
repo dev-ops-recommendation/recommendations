@@ -109,3 +109,39 @@ class TestRecommendationServer(TestCase):
         resp = self.app.post("/recommendations")
         self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
+    
+    def test_list_recommendations(self):
+        """Get a list of recommendations"""
+        self._list_recommendations(4)
+        resp = self.app.get(BASE_URL)
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data),4)
+
+
+    def test_list_by_recommendation_type(self):
+        """List Recommendations by recommendation_type"""
+        recommendations = self._create_recommendations(10)
+        test_recommendation_type = recommendations[0].recommendation_type
+        recommendation_type_recommendations = [recommendation for recommendation in recommendations if recommendation.recommendation_type == test_recommendation_type]
+        resp = self.app.get(BASE_URL, query_string="recommendation_type={}".format(test_recommendation_type))
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), len(recommendation_type_recommendations))
+        # check the data just to be sure
+        for recommendation in data:
+            self.assertEqual(recommendation["recommendation_type"], test_recommendation_type)
+    
+    def test_list_recommendation_by_active(self):
+        """List Recommendations by Active"""
+        recommendations = self._create_recommendations(10)
+        test_active = recommendations[0].active
+        active_recommendations = [recommendation for recommendation in recommendations if recommendation.active == test_active]
+        resp = self.app.get(BASE_URL, query_string="active={}".format(test_active))
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(len(data), len(active_recommendations))
+        # check the data just to be sure
+        for recommendation in data:
+            self.assertEqual(recommendation["active"], test_active)
+
