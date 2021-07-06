@@ -80,7 +80,7 @@ def get_recommendations(product_id1, product_id2):
         raise NotFound("Recommendation for product id {} and {} was not found.".format(product_id1, product_id2))
     return make_response(jsonify(recommendation.serialize()), status.HTTP_200_OK)
 
-@app.route("/recommendations/<int:product_id1>/related-products/<int:product_id2>", methods=["DELETE"])
+@app.route("/recommendations/<int:product_id1>/related-products/<int:product_id2>", methods=["DELETE", "GET"])
 def delete_recommendations(product_id1, product_id2):
     """
     Delete a relationship
@@ -88,8 +88,9 @@ def delete_recommendations(product_id1, product_id2):
     """
     app.logger.info("Request to delete relationship between product ids: %s %s", product_id1, product_id2)
     recommendation = Recommendation.find(product_id1, product_id2)
-    if recommendation:
-        recommendation.delete()
+    if not recommendation:
+        raise NotFound("Recommendation for product id {} and {} was not found.".format(product_id1, product_id2))
+    recommendation.delete()
     return make_response("", status.HTTP_204_NO_CONTENT)
 
 def check_content_type(content_type):
