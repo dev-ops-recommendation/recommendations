@@ -50,15 +50,7 @@ def init_db():
 def list_recommendations():
     """ Returns all of the Recommendations """
     app.logger.info("Request for recommendations list")
-    recommendations = []
-    recommendation_type = request.args.get("recommendation_type")
-    active = request.args.get("active")
-    if recommendation_type:
-        recommendations = Recommendation.find_by_recommendation_type(recommendation_type)
-    elif active:
-        recommendations = Recommendation.find_by_active(active)
-    else:
-        recommendations = Recommendation.all()
+    recommendations = Recommendation.all()
 
     results = [recommendation.serialize() for recommendation in recommendations]
     return make_response(jsonify(results), status.HTTP_200_OK)
