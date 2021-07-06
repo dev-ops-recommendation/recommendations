@@ -92,15 +92,8 @@ def update_recommendations(product_id1, product_id2):
     recommendation.deserialize(request.get_json())
     old_recommendation = recommendation.find(product_id1, product_id2)
     if not old_recommendation:
-        raise BadRequest("No existing relationship between product {} and {}".format(product_id1, product_id2))
-    if recommendation.relationship == "GO_TOGETHER":
-        old_recommendation.relationship = Type.GO_TOGETHER
-    elif recommendation.relationship == "CROSS_SELL":
-        old_recommendation.relationship = Type.CROSS_SELL
-    elif recommendation.relationship == "UP_SELL":
-        old_recommendation.relationship = Type.UP_SELL
-    elif recommendation.relationship == "ACCESSORY":
-        old_recommendation.relationship = Type.ACCESSORY
+        raise NotFound("Recommendation for product id {} and {} was not found.".format(product_id1, product_id2))
+    old_recommendation.relationship = recommendation.relationship
     recommendation.update()
     message = old_recommendation.serialize()
     return make_response(

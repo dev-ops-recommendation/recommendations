@@ -13,6 +13,7 @@ from unittest.mock import MagicMock, patch
 from service import status  # HTTP Status Codes
 from service.models import db, Recommendation, Type
 from service.routes import app
+import json
 
 BASE_URL = "/recommendations"
 CONTENT_TYPE_JSON = "application/json"
@@ -148,8 +149,35 @@ class TestRecommendationServer(TestCase):
             json=new_recommendation,
             content_type="application/json"
         )
-       #new_recommendation["relationship"] = "CROSS_SELL"
-       #resp = self.app.put("/recommendations")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         updated_recommendation = resp.get_json()
         self.assertEqual(updated_recommendation["relationship"], "CROSS_SELL")
+
+    def test_update_recommendation_not_found(self):
+        """ update a Recommendation that is not found """
+        test_recommendation = RecommendationFactory()
+        test_recommendation.product_id1 = 0
+        test_recommendation.product_id2 = 0
+        logging.debug(test_recommendation)
+        resp = self.app.put("/recommendations/products/0/related-products/0",json=test_recommendation.serialize(),
+            content_type="application/json")
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_update_recommendation_no_content_type(self):
+        """ create a Recommendation with no content type """
+        resp = self.app.put("/recommendations/products/0/related-products/0")
+        self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+
+    def test_update_recommendation_no_relation_type(self):
+        """ create a Recommendation with no content type """
+        test_recommendation = RecommendationFactory()
+        test = json.dumps({'product_id1': test_recommendation.product_id1, "product_id2": test_recommendation.product_id2, "relationship": " "})
+        logging.debug(test_recommendation.serialize())
+        logging.debug(test)
+        resp = self.app.put(
+            "/recommendations/products/{}/related-products/{}".format(test_recommendation.product_id1,
+                                                                      test_recommendation.product_id2),
+            json=test,
+            content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
