@@ -29,6 +29,4 @@ class RecommendationFactory(factory.Factory):
     product_id1 = FuzzyChoice(choices=[1, 2, 3, 4])
     product_id2 = FuzzyChoice(choices=[5, 6, 7, 8])
     relationship = FuzzyChoice(choices=[Type.UP_SELL, Type.CROSS_SELL, Type.ACCESSORY])
-    title = FuzzyChoice(choices=["Recommendation one", "Recommendation two", "Recommendation three", "Recommendation four"])
-    recommendation_type = FuzzyChoice(choices=["Upsell", "Cross_sell", "Accessory", "Bundle"])
-    active = FuzzyChoice(choices=[True, False])
+    
