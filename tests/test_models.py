@@ -93,12 +93,12 @@ class TestRecommendationModel(unittest.TestCase):
     
     def test_list_recommendation(self):
         """Test list recommendations"""
-        recommendations = RecommendationFactory.create_batch()
+        recommendations = RecommendationFactory.create_batch(1)
         for recommendation in recommendations:
             recommendation.create()
         logging.debug(recommendations)
         # log data
-        self.assertEqual(len(recommendation.all()), 1)
+        self.assertEqual(len(recommendation.all()),1)
     
 
 
