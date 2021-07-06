@@ -9,6 +9,20 @@ The `recommendations resource` is a representation a product recommendation base
 * It could also recommend based on what other customers have purchased like "customers who bought item A usually buy item B". 
 * Recommendations should have a recommendation type like cross-sell, upsell, accessory, etc. This way a product page could request all of the up-sells for a product.
 
+### Setup
+ The easiest way to run this project is with [Vagrant](https://www.vagrantup.com/) and [VirtualBox](https://www.virtualbox.org/). If you don't have these softwares, download and install them first.
+
+Then, all you have to do is clone this repo and invoke vagrant:
+
+```shell
+    $ git clone https://github.com/dev-ops-recommendation/recommendations.git
+    $ cd recommendations
+    $ vagrant up
+    $ vagrant ssh
+    $ cd /vagrant
+```
+
+
 ## Requirements 
 This is the list of expected functions:
 
