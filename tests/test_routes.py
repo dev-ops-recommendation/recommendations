@@ -115,13 +115,13 @@ class TestRecommendationServer(TestCase):
         """ Delete a recommendation """
         test_recommendation = self._create_recommendations(1)[0]
         resp = self.app.delete(
-            "/recommendations/{}/related-products/{}".format(test_recommendation.product_id1, test_recommendation.product_id2),
+            "/recommendations/products/{}/related-products/{}".format(test_recommendation.product_id1, test_recommendation.product_id2),
             content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(len(resp.data), 0)
         resp = self.app.get(
-            "/recommendations/{}/related-products/{}".format(test_recommendation.product_id1, test_recommendation.product_id2),
+            "/recommendations/products/{}/related-products/{}".format(test_recommendation.product_id1, test_recommendation.product_id2),
             content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
