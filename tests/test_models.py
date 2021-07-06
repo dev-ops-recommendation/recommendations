@@ -53,6 +53,14 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEquals(recommendation.product_id1, 1)
         self.assertEquals(recommendation.product_id2, 2)
 
+    def test_delete_a_recommendation(self): 
+        """ Delete a recommendation from the database """
+        recommendation = RecommendationFactory()
+        recommendation.create()
+        self.assertEqual(len(Recommendation.all()), 1)
+        recommendation.delete()
+        self.assertEqual(len(Recommendation.all()), 0)
+
     def test_serialize_a_recommendation(self):
         """ Test serialization of a Recommendation """
         recommendation = Recommendation(product_id1=1, product_id2=2, relationship=Type.UP_SELL)
@@ -65,7 +73,7 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertIn("relationship", data)
         self.assertEqual(data["relationship"], recommendation.relationship.name)
 
-    def test_deserialize_a_pet(self):
+    def test_deserialize_a_recommendation(self):
         """ Test deserialization of a Recommendation """
         data = {
             "product_id1": 1,
@@ -102,4 +110,44 @@ class TestRecommendationModel(unittest.TestCase):
     
 
 
-    
+
+    def test_find_recommendation_type(self):
+        """Find a recommendation type by two product ids"""
+        recommendations = RecommendationFactory.create_batch(2)
+        for recommendation in recommendations:
+            recommendation.create()
+        logging.debug(recommendations)
+
+        # find the 2nd recommendation in the list
+        recommendation = Recommendation.find(recommendations[1].product_id1, recommendations[1].product_id2)
+        self.assertIsNot(recommendation, None)
+        self.assertEqual(recommendation.product_id1, recommendations[1].product_id1)
+        self.assertEqual(recommendation.product_id2, recommendations[1].product_id2)
+        self.assertEqual(recommendation.relationship, recommendations[1].relationship)
+
+    def test_update_a_recommendation(self):
+        """Update a recommendation type by two product ids"""
+        recommendation = RecommendationFactory()
+        logging.debug(recommendation)
+        recommendation.create()
+        logging.debug(recommendation)
+        logging.debug(type(recommendation.relationship.name))
+        recommendation.relationship = Type.CROSS_SELL
+        recommendation.update()
+        self.assertIsNot(recommendation, None)
+        self.assertEqual(recommendation.relationship.name, 'CROSS_SELL')
+        recommendations = recommendation.all()
+        self.assertEqual(len(recommendations), 1)
+        self.assertEqual(recommendations[0].product_id1, recommendation.product_id1)
+        self.assertEqual(recommendations[0].product_id2, recommendation.product_id2)
+        self.assertEqual(recommendations[0].relationship, recommendation.relationship)
+
+    def test_update_a_recommendation_no_realtionship(self):
+        """Update a recommendation type by two product ids"""
+        recommendation = RecommendationFactory()
+        logging.debug(recommendation)
+        recommendation.create()
+        logging.debug(recommendation)
+        recommendation.relationship = None
+        self.assertRaises(DataValidationError, recommendation.update)
+
