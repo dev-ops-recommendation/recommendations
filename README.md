@@ -61,6 +61,26 @@ returns
 ```
 If no relationship exits between given products id, a 404 error will be issued  
 
+### Update a recommendation between two products id
+```PUT http://0.0.0.0:5000/recommendations/products/1/related-products/2``` 
+body  
+```
+{
+  "product_id1": 1,
+  "product_id2": 2,
+  "relationship": "CROSS_SELL"
+}
+```
+returns    
+```
+{
+  "product_id1": 1,
+  "product_id2": 2,
+  "relationship": "CROSS_SELL"
+}
+```
+If no relationship exits between given products id, a 404 error will be issued 
+
 
 ## Team Member
 * [Mandy Xu - mandy-cmd && emxxxm](https://github.com/mandy-cmd)
