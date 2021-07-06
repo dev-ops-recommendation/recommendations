@@ -90,5 +90,42 @@ class TestRecommendationModel(unittest.TestCase):
         data = "this is not a dictionary"
         recommendation = Recommendation()
         self.assertRaises(DataValidationError, recommendation.deserialize, data)
+    
+    def test_find_recommendation(self):
+        """Find a Recommendation by ID"""
+        recommendations = RecommendationFactory.create_batch(3)
+        for recommendation in recommendations:
+            recommendation.create()
+        logging.debug(recommendations)
+        # log data
+        self.assertEqual(len(recommendation.all()), 3)
+        recommendation = Recommendation.find(recommendations[1].id)
+        self.assertIsNot(recommendation, None)
+        self.assertEqual(recommendation.id, recommendations[1].id)
+        self.assertEqual(recommendation.title, recommendations[1].title)
+        self.assertEqual(recommendation.recommendation_type,recommendations[1].recommendation_type)
+    
+    def test_list_by_recommendation_type(self):
+        """Test listing a Recommendation by recommendation_type"""
+        Recommendation(title="Recommendation one", recommendation_type="Upsell", active=True).create()
+        Recommendation(title="Recommendation two", recommendation_type="Cross_sell", active=False).create()
+        Recommendations = Recommendation.find_by_recommendation_type("Cross_sell")
+        self.assertEqual(recommendations[0].title, "Recommendation one")
+        self.assertEqual(recommendations[0].recommendation_type, "Upsell")
+        self.assertEqual(recommendations[0].title, "Recommendation two")
+        self.assertEqual(recommendations[0].recommendation_type, "Cross_sell")
+        self.assertEqual(recommendations[0].active, False)
+
+    def test_list_by_active(self):
+        """Test listing Recommendation by active"""
+        Recommendation(title="Recommendation three", recommendation_type="Accessory", active=True).create()
+        Reommendation(title="Reommendation four", recommendation_type="Bundle", active=False).create()
+        Recommendations = Recommendation.find_by_active(False)
+        self.assertEqual(recommendations[0].title, "Recommendation three")
+        self.assertEqual(recommendations[0].recommendation_type, "Accessory")
+        self.assertEqual(recommendations[0].title, "Recommendation four")
+        self.assertEqual(recommendations[0].recommendation_type, "Bundle")
+        self.assertEqual(recommendations[0].active, False)
+
 
     
