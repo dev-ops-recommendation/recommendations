@@ -11,7 +11,7 @@ from tests.factories import RecommendationFactory
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
 from service import status  # HTTP Status Codes
-from service.models import db, Recommendation
+from service.models import db, Recommendation, Type
 from service.routes import app
 
 BASE_URL = "/recommendations"
@@ -140,9 +140,16 @@ class TestRecommendationServer(TestCase):
 
         # update the recommendation
         new_recommendation = resp.get_json()
-        logging.debug(new_recommendation)
         new_recommendation["relationship"] = "CROSS_SELL"
-        resp = self.app.put("/recommendations")
+        logging.debug(new_recommendation)
+        resp = self.app.put(
+            "/recommendations/products/{}/related-products/{}".format(test_recommendation.product_id1,
+                                                                      test_recommendation.product_id2),
+            json=new_recommendation,
+            content_type="application/json"
+        )
+       #new_recommendation["relationship"] = "CROSS_SELL"
+       #resp = self.app.put("/recommendations")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         updated_recommendation = resp.get_json()
-        self.assertEqual(updated_recommendation["relationship"], 1)
+        self.assertEqual(updated_recommendation["relationship"], "CROSS_SELL")

@@ -15,7 +15,7 @@ from werkzeug.exceptions import NotFound, BadRequest
 # For this example we'll use SQLAlchemy, a popular ORM that supports a
 # variety of backends including SQLite, MySQL, and PostgreSQL
 from flask_sqlalchemy import SQLAlchemy
-from service.models import Recommendation
+from service.models import Recommendation,Type
 
 # Import Flask application
 from . import app
@@ -80,23 +80,29 @@ def get_recommendations(product_id1, product_id2):
         raise NotFound("Recommendation for product id {} and {} was not found.".format(product_id1, product_id2))
     return make_response(jsonify(recommendation.serialize()), status.HTTP_200_OK)
 
-@app.route("/recommendations", methods=["PUT"])
-def update_recommendations():
+@app.route("/recommendations/products/<int:product_id1>/related-products/<int:product_id2>", methods=["PUT"])
+def update_recommendations(product_id1, product_id2):
     """
     update a relationship
     This endpoint will update a relationship based the data in the body that is posted
     """
     app.logger.info("Request to update a ")
     check_content_type("application/json")
-    new_recommendation = Recommendation()
-    new_recommendation.deserialize(request.get_json())
-    old_recommendation = new_recommendation.find(new_recommendation.product_id1, new_recommendation.product_id2)
+    recommendation = Recommendation()
+    recommendation.deserialize(request.get_json())
+    old_recommendation = recommendation.find(product_id1, product_id2)
     if not old_recommendation:
-        raise BadRequest("No existing relationship between product {} and {}".format(new_recommendation.product_id1, new_recommendation.product_id2))
-
-    old_recommendation.relationship = new_recommendation.relationship
-    new_recommendation.update()
-    message = new_recommendation.serialize()
+        raise BadRequest("No existing relationship between product {} and {}".format(product_id1, product_id2))
+    if recommendation.relationship == "GO_TOGETHER":
+        old_recommendation.relationship = Type.GO_TOGETHER
+    elif recommendation.relationship == "CROSS_SELL":
+        old_recommendation.relationship = Type.CROSS_SELL
+    elif recommendation.relationship == "UP_SELL":
+        old_recommendation.relationship = Type.UP_SELL
+    elif recommendation.relationship == "ACCESSORY":
+        old_recommendation.relationship = Type.ACCESSORY
+    recommendation.update()
+    message = old_recommendation.serialize()
     return make_response(
         jsonify(message), status.HTTP_200_OK
     )

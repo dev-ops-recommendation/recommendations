@@ -100,4 +100,9 @@ class Recommendation(db.Model):
         """ Finds relationship between two product ids """
         logger.info("Processing lookup for id %s %s", product_id1, product_id2)
         return cls.query.get((product_id1, product_id2))
-        
+
+    @classmethod
+    def all(cls):
+        """Returns all of the Pets in the database"""
+        logger.info("Processing all recommendation")
+        return cls.query.all()

@@ -112,7 +112,8 @@ class TestRecommendationModel(unittest.TestCase):
         logging.debug(recommendation)
         recommendation.create()
         logging.debug(recommendation)
-        recommendation.relationship.name = 'CROSS_SELL'
+        logging.debug(type(recommendation.relationship.name))
+        recommendation.relationship = Type.CROSS_SELL
         recommendation.update()
         self.assertIsNot(recommendation, None)
         self.assertEqual(recommendation.relationship.name, 'CROSS_SELL')
@@ -121,4 +122,5 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEqual(recommendations[0].product_id1, recommendation.product_id1)
         self.assertEqual(recommendations[0].product_id2, recommendation.product_id2)
         self.assertEqual(recommendations[0].relationship, recommendation.relationship)
+
 
