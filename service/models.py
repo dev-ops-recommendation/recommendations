@@ -103,24 +103,4 @@ class Recommendation(db.Model):
         return cls.query.all()
 
 
-    # @classmethod
-    # def find_by_recommendation_type(cls, recommendation_type):
-    #     """Returns all recommendations with the given recommendation_type
-
-    #     Args:
-    #         recommendation_type (string): the recommendation_type of the Recommendations you want to match
-    #     """
-    #     logger.info("Processing recommendation_type query for %s ...",
-    #                 recommendation_type)
-    #     return cls.query.filter(cls.recommendation_type == recommendation_type)
-
-
-    # @classmethod
-    # def find_by_active(cls, active):
-    #     """Returns all Recommendations with the given active
-    #     Args:
-    #        Active (boolean): True for recommendations that are available
-    #     """
-    #     logger.info("Processing active query for %s ...",
-    #                 active)
-    #     return cls.query.filter(cls.active == active)
+    
