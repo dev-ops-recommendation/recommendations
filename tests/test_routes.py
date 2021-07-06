@@ -167,17 +167,3 @@ class TestRecommendationServer(TestCase):
         """ create a Recommendation with no content type """
         resp = self.app.put("/recommendations/products/0/related-products/0")
         self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
-
-    # def test_update_recommendation_no_relation_type(self):
-    #     """ create a Recommendation with no content type """
-    #     test_recommendation = RecommendationFactory()
-    #     test = json.dumps({'product_id1': test_recommendation.product_id1, "product_id2": test_recommendation.product_id2, "relationship": " "})
-    #     logging.debug(test_recommendation.serialize())
-    #     logging.debug(test)
-    #     resp = self.app.put(
-    #         "/recommendations/products/{}/related-products/{}".format(test_recommendation.product_id1,
-    #                                                                   test_recommendation.product_id2),
-    #         json=test,
-    #         content_type="application/json"
-    #     )
-    #     self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
