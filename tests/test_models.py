@@ -98,6 +98,17 @@ class TestRecommendationModel(unittest.TestCase):
         data = "this is not a dictionary"
         recommendation = Recommendation()
         self.assertRaises(DataValidationError, recommendation.deserialize, data)
+    
+    def test_list_recommendation(self):
+        """Test list recommendations"""
+        recommendations = RecommendationFactory.create_batch(1)
+        for recommendation in recommendations:
+            recommendation.create()
+        logging.debug(recommendations)
+        # log data
+        self.assertEqual(len(recommendation.all()),1)
+    
+
 
 
     def test_find_recommendation_type(self):
@@ -139,5 +150,4 @@ class TestRecommendationModel(unittest.TestCase):
         logging.debug(recommendation)
         recommendation.relationship = None
         self.assertRaises(DataValidationError, recommendation.update)
-
 

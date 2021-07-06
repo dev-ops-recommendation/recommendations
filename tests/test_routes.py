@@ -143,6 +143,11 @@ class TestRecommendationServer(TestCase):
         """ Create a Recommendation with no content type """
         resp = self.app.post("/recommendations")
         self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+    
+    def test_list_recommendations(self):
+        """Get a list of recommendations"""
+        resp = self.app.get("/recommendations")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
 
     def test_update_recommendation(self):
         """Update an existing recommendation"""
@@ -182,3 +187,4 @@ class TestRecommendationServer(TestCase):
         """ create a Recommendation with no content type """
         resp = self.app.put("/recommendations/products/0/related-products/0")
         self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+

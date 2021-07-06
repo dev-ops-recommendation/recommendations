@@ -44,6 +44,19 @@ def init_db():
 
 
 ######################################################################
+# LIST RECOMMENDATIONS
+######################################################################
+@app.route("/recommendations", methods=["GET"])
+def list_recommendations():
+    """ Returns all of the Recommendations """
+    app.logger.info("Request for recommendations list")
+    recommendations = Recommendation.all()
+
+    results = [recommendation.serialize() for recommendation in recommendations]
+    return make_response(jsonify(results), status.HTTP_200_OK)
+
+
+######################################################################
 # ADD A NEW RECOMMENDATION (RELATIONSHIP BETWEEN PRODUCTS)
 ######################################################################
 @app.route("/recommendations", methods=["POST"])

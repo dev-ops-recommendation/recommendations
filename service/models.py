@@ -26,7 +26,9 @@ class Type(Enum):
     UP_SELL = 2
     ACCESSORY = 3
     
-
+### -----------------------------------------------------------
+### CLASS RECOMMENDATION
+### -----------------------------------------------------------
 class Recommendation(db.Model):
     """
     Class that represents a relationship/recommendation
@@ -40,6 +42,9 @@ class Recommendation(db.Model):
     relationship = db.Column(
         db.Enum(Type), nullable=False, server_default=(Type.GO_TOGETHER.name)
         )
+    ### -----------------------------------------------------------
+    ### INSTANCE METHODS
+    ### -----------------------------------------------------------
     def __repr__(self):
         return "<Recommendation %r product_id1=[%s] product_id2=[%s]>" % (self.relationship, self.product_id1, self.product_id2)
 
@@ -93,6 +98,10 @@ class Recommendation(db.Model):
                 "Invalid YourResourceModel: body of request contained bad or no data"
             )
         return self
+    
+    ### -----------------------------------------------------------
+    ### CLASS METHODS
+    ### -----------------------------------------------------------
 
     @classmethod
     def init_db(cls, app):
@@ -105,12 +114,6 @@ class Recommendation(db.Model):
         db.create_all()  # make our sqlalchemy tables
 
     @classmethod
-    def all(cls):
-        """ Returns all of the records in the database """
-        logger.info("Processing all records")
-        return cls.query.all()
-
-    @classmethod
     def find(cls, product_id1, product_id2):
         """ Finds relationship between two product ids """
         logger.info("Processing lookup for id %s %s", product_id1, product_id2)
@@ -121,4 +124,5 @@ class Recommendation(db.Model):
         """Returns all of the Pets in the database"""
         logger.info("Processing all recommendation")
         return cls.query.all()
+
 
