@@ -55,12 +55,12 @@ $ vagrant halt
 body  
 ```
 {
-  "product_id1": 1,
-  "product_id2": 2,
+  "product_id": 1,
+  "recommendation_product_id": 2,
   "relationship": "UP_SELL"
 }
 ```
-Note that relationship between ```{"product_id1": 1, "product_id2": 2}``` and ```{"product_id1": 2, "product_id2": 1}``` are different.   
+Note that relationship between ```{"product_id": 1, "recommendation_product_id": 2}``` and ```{"product_id": 2, "recommendation_product_id": 1}``` are different.   
 This means that you could define different relationships for 1&2 and then for 2&1.      
 If you are trying to create relationship for 1&2 while the relationship already exists, an error will be returned   
 and indicate that the recommendation cannot be returned.   
@@ -79,8 +79,8 @@ Other kinds of relationships will result in ```Cannot create relationship``` err
 returns    
 ```
 {
-  "product_id1": 1,
-  "product_id2": 2,
+  "product_id": 1,
+  "recommendation_product_id": 2,
   "relationship": "UP_SELL"
 }
 ```
@@ -91,16 +91,16 @@ If no relationship exits between given product ids, a 404 error will be issued
 body  
 ```
 {
-  "product_id1": 1,
-  "product_id2": 2,
+  "product_id": 1,
+  "recommendation_product_id": 2,
   "relationship": "CROSS_SELL"
 }
 ```
 returns    
 ```
 {
-  "product_id1": 1,
-  "product_id2": 2,
+  "product_id": 1,
+  "recommendation_product_id": 2,
   "relationship": "CROSS_SELL"
 }
 ```
@@ -111,8 +111,8 @@ If no relationship exits between given product ids, a 404 error will be issued
 body
 ```
 {
-  "product_id1": 1,
-  "product_id2": 2,
+  "product_id": 1,
+  "recommendation_product_id": 2,
   "relationship": "CROSS_SELL"
 }
 ```
@@ -123,8 +123,8 @@ If no relationship exits between given product ids, a 404 error will be issued
 body
 ```
 {
-  "product_id1": 1,
-  "product_id2": 2,
+  "product_id": 1,
+  "recommendation_product_id": 2,
   "relationship": "CROSS_SELL"
 }
 ```
@@ -137,13 +137,13 @@ GET http://0.0.0.0:5000/recommendations/products/1?type=UP_SELL
 ```
 [
     {
-        "product_id1": 1,
-        "product_id2": 2,
+        "product_id": 1,
+        "recommendation_product_id": 2,
         "relationship": "UP_SELL"
     },
     {
-        "product_id1": 1,
-        "product_id2": 10,
+        "product_id": 1,
+        "recommendation_product_id": 10,
         "relationship": "UP_SELL"
     }
 ]

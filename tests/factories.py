@@ -26,7 +26,7 @@ class RecommendationFactory(factory.Factory):
     class Meta:
         model = Recommendation
 
-    product_id1 = FuzzyChoice(choices=[1, 2, 3, 4])
-    product_id2 = FuzzyChoice(choices=[5, 6, 7, 8])
+    product_id = FuzzyChoice(choices=[1, 2, 3, 4])
+    recommendation_product_id = FuzzyChoice(choices=[5, 6, 7, 8])
     relationship = FuzzyChoice(choices=[Type.UP_SELL, Type.CROSS_SELL, Type.ACCESSORY])
     

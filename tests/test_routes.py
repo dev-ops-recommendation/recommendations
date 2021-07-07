@@ -80,7 +80,7 @@ class TestRecommendationServer(TestCase):
         # get the id of a pet
         test_recommendation = self._create_recommendations(1)[0]
         resp = self.app.get(
-            "/recommendations/products/{}/related-products/{}".format(test_recommendation.product_id1, test_recommendation.product_id2), content_type="application/json"
+            "/recommendations/products/{}/related-products/{}".format(test_recommendation.product_id, test_recommendation.recommendation_product_id), content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
@@ -105,8 +105,8 @@ class TestRecommendationServer(TestCase):
         self.assertIsNotNone(location)
         # Check the data is correct
         new_recommendation = resp.get_json()
-        self.assertEqual(new_recommendation["product_id1"], test_recommendation.product_id1, "product id1 does not match")
-        self.assertEqual(new_recommendation["product_id2"], test_recommendation.product_id2, "product id2 does not match")
+        self.assertEqual(new_recommendation["product_id"], test_recommendation.product_id, "product id1 does not match")
+        self.assertEqual(new_recommendation["recommendation_product_id"], test_recommendation.recommendation_product_id, "product id2 does not match")
         
         self.assertEqual(
             new_recommendation["relationship"], test_recommendation.relationship.name, "Relationship does not match"
@@ -116,13 +116,13 @@ class TestRecommendationServer(TestCase):
         """ Delete a recommendation """
         test_recommendation = self._create_recommendations(1)[0]
         resp = self.app.delete(
-            "/recommendations/products/{}/related-products/{}".format(test_recommendation.product_id1, test_recommendation.product_id2),
+            "/recommendations/products/{}/related-products/{}".format(test_recommendation.product_id, test_recommendation.recommendation_product_id),
             content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(len(resp.data), 0)
         resp = self.app.get(
-            "/recommendations/products/{}/related-products/{}".format(test_recommendation.product_id1, test_recommendation.product_id2),
+            "/recommendations/products/{}/related-products/{}".format(test_recommendation.product_id, test_recommendation.recommendation_product_id),
             content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
@@ -157,8 +157,8 @@ class TestRecommendationServer(TestCase):
         self.assertEqual(len(result), 1)
         result_recommendation = result[0]
 
-        self.assertEqual(result_recommendation['product_id1'], test_recommendation.product_id1)
-        self.assertEqual(result_recommendation['product_id2'], test_recommendation.product_id2)
+        self.assertEqual(result_recommendation['product_id'], test_recommendation.product_id)
+        self.assertEqual(result_recommendation['recommendation_product_id'], test_recommendation.recommendation_product_id)
         self.assertEqual(result_recommendation['relationship'], test_recommendation.relationship.name)
 
     def test_update_recommendation(self):
@@ -176,8 +176,8 @@ class TestRecommendationServer(TestCase):
         new_recommendation["relationship"] = "CROSS_SELL"
         logging.debug(new_recommendation)
         resp = self.app.put(
-            "/recommendations/products/{}/related-products/{}".format(test_recommendation.product_id1,
-                                                                      test_recommendation.product_id2),
+            "/recommendations/products/{}/related-products/{}".format(test_recommendation.product_id,
+                                                                      test_recommendation.recommendation_product_id),
             json=new_recommendation,
             content_type="application/json"
         )
@@ -188,8 +188,8 @@ class TestRecommendationServer(TestCase):
     def test_update_recommendation_not_found(self):
         """ update a Recommendation that is not found """
         test_recommendation = RecommendationFactory()
-        test_recommendation.product_id1 = 0
-        test_recommendation.product_id2 = 0
+        test_recommendation.product_id = 0
+        test_recommendation.recommendation_product_id = 0
         logging.debug(test_recommendation)
         resp = self.app.put("/recommendations/products/0/related-products/0",json=test_recommendation.serialize(),
             content_type="application/json")
@@ -213,7 +213,7 @@ class TestRecommendationServer(TestCase):
         # query the recommendation
         
         resp = self.app.get(
-            "/recommendations/products/{}?type={}".format(test_recommendation.product_id1,
+            "/recommendations/products/{}?type={}".format(test_recommendation.product_id,
                                                                       test_recommendation.relationship.name)
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
