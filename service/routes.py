@@ -87,10 +87,10 @@ def create_recommendations():
     try:
         recommendation.create()
     except:
-        raise BadRequest("Cannot create relationship between product {} and {}".format(recommendation.product_id1, recommendation.product_id2))
+        raise BadRequest("Cannot create relationship between product {} and {}".format(recommendation.product_id, recommendation.recommendation_product_id))
 
     message = recommendation.serialize()
-    location_url = url_for("get_recommendations", product_id1=recommendation.product_id1, product_id2=recommendation.product_id2, _external=True)
+    location_url = url_for("get_recommendations", product_id=recommendation.product_id, recommendation_product_id=recommendation.recommendation_product_id, _external=True)
     return make_response(
         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
     )
@@ -98,24 +98,24 @@ def create_recommendations():
 ######################################################################
 # GET A RECOMMENDATION (RELATIONSHIP BETWEEN PRODUCTS)
 ######################################################################
-@app.route("/recommendations/products/<int:product_id1>/related-products/<int:product_id2>", methods=["GET"])
-def get_recommendations(product_id1, product_id2):
+@app.route("/recommendations/products/<int:product_id>/related-products/<int:recommendation_product_id>", methods=["GET"])
+def get_recommendations(product_id, recommendation_product_id):
     """
-    Retrieve recommendations for (product_id1, product_id2)
+    Retrieve recommendations for (product_id, recommendation_product_id)
 
     This endpoint will return a relationship between two product ids. 
     """
-    app.logger.info("Request for relationship between product ids: %s %s", product_id1, product_id2)
-    recommendation = Recommendation.find(product_id1, product_id2)
+    app.logger.info("Request for relationship between product ids: %s %s", product_id, recommendation_product_id)
+    recommendation = Recommendation.find(product_id, recommendation_product_id)
     if not recommendation:
-        raise NotFound("Recommendation for product id {} and {} was not found.".format(product_id1, product_id2))
+        raise NotFound("Recommendation for product id {} and {} was not found.".format(product_id, recommendation_product_id))
     return make_response(jsonify(recommendation.serialize()), status.HTTP_200_OK)
 
 ##############################################################
 # UPDATE A RECOMMENDATION (RELATIONSHIP BETWEEN PRODUCTS)
 ######################################################################
-@app.route("/recommendations/products/<int:product_id1>/related-products/<int:product_id2>", methods=["PUT"])
-def update_recommendations(product_id1, product_id2):
+@app.route("/recommendations/products/<int:product_id>/related-products/<int:recommendation_product_id>", methods=["PUT"])
+def update_recommendations(product_id, recommendation_product_id):
     """
     update a relationship
     This endpoint will update a relationship based the data in the body that is posted
@@ -124,9 +124,9 @@ def update_recommendations(product_id1, product_id2):
     check_content_type("application/json")
     recommendation = Recommendation()
     recommendation.deserialize(request.get_json())
-    old_recommendation = recommendation.find(product_id1, product_id2)
+    old_recommendation = recommendation.find(product_id, recommendation_product_id)
     if not old_recommendation:
-        raise NotFound("Recommendation for product id {} and {} was not found.".format(product_id1, product_id2))
+        raise NotFound("Recommendation for product id {} and {} was not found.".format(product_id, recommendation_product_id))
     old_recommendation.relationship = recommendation.relationship
     recommendation.update()
     message = old_recommendation.serialize()
@@ -137,14 +137,14 @@ def update_recommendations(product_id1, product_id2):
 ##############################################################
 # DELETE A RECOMMENDATION (RELATIONSHIP BETWEEN PRODUCTS)
 ######################################################################
-@app.route("/recommendations/products/<int:product_id1>/related-products/<int:product_id2>", methods=["DELETE"])
-def delete_recommendations(product_id1, product_id2):
+@app.route("/recommendations/products/<int:product_id>/related-products/<int:recommendation_product_id>", methods=["DELETE"])
+def delete_recommendations(product_id, recommendation_product_id):
     """
     Delete a relationship
     This endpoint will delete a relationship based the product ids specified in the path
     """
-    app.logger.info("Request to delete relationship between product ids: %s %s", product_id1, product_id2)
-    recommendation = Recommendation.find(product_id1, product_id2)
+    app.logger.info("Request to delete relationship between product ids: %s %s", product_id, recommendation_product_id)
+    recommendation = Recommendation.find(product_id, recommendation_product_id)
     if recommendation:
         recommendation.delete()
     return make_response("", status.HTTP_204_NO_CONTENT)
