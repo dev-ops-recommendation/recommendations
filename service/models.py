@@ -131,3 +131,10 @@ class Recommendation(db.Model):
         logger.info("Processing id and type query for id %s and type %s", product_id, type)
         return cls.query.filter(cls.product_id1 == product_id).filter(cls.relationship == type)
 
+    @classmethod
+    def clear(cls):
+        '''Clear all data entries'''
+        logger.info("Processing clearing all data entries")
+        cls.query.delete()
+        db.session.commit()
+

@@ -20,6 +20,20 @@ from service.models import Recommendation,Type
 # Import Flask application
 from . import app
 
+"""
+Recommendations Service
+
+Paths:
+------
+GET /recommendations - Returns a list all of the Recommendations
+GET /recommendations/{id}/related-products/{id} - Returns the Recommendation with a given id number and related product id
+GET /recommendations/products/{id}?type={relationship-type}
+POST /recommendations - creates a new Recommendation record in the database
+PUT /recommendations/{id}/related-products/{id} - updates a Recommendation record in the database
+DELETE /recommendations/{id}/related-products/{id} - deletes a Recommendation record in the database
+DELETE /recommendations - deletes all Recommendation record in the database
+"""
+
 ######################################################################
 # GET INDEX
 ######################################################################
@@ -154,3 +168,14 @@ def query_recommendations(product_id):
 
     results = [recommendation.serialize() for recommendation in recommendations]
     return make_response(jsonify(results), status.HTTP_200_OK)
+
+######################################################################
+# CLEAR ALL RECOMMENDATIONS 
+######################################################################
+@app.route("/recommendations", methods=["DELETE"])
+def clear_recommendations():
+    """ Clear all of the Recommendations """
+    app.logger.info("Request for clear all recommendations")
+    Recommendation.clear()
+    return make_response("", status.HTTP_204_NO_CONTENT)
+
