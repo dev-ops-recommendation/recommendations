@@ -37,8 +37,8 @@ class Recommendation(db.Model):
     app = None
 
     # Table Schema
-    product_id1 = db.Column(db.Integer, primary_key=True)
-    product_id2 = db.Column(db.Integer, primary_key=True)
+    product_id = db.Column(db.Integer, primary_key=True)
+    recommendation_product_id = db.Column(db.Integer, primary_key=True)
     relationship = db.Column(
         db.Enum(Type), nullable=False, server_default=(Type.GO_TOGETHER.name)
         )
@@ -46,13 +46,13 @@ class Recommendation(db.Model):
     ### INSTANCE METHODS
     ### -----------------------------------------------------------
     def __repr__(self):
-        return "<Recommendation %r product_id1=[%s] product_id2=[%s]>" % (self.relationship, self.product_id1, self.product_id2)
+        return "<Recommendation %r product_id=[%s] recommendation_product_id=[%s]>" % (self.relationship, self.product_id, self.recommendation_product_id)
 
     def create(self):
         """
         Creates a recommendation type to the database
         """
-        logger.info("Creating %s between %s and %s", self.relationship, self.product_id1, self.product_id2)
+        logger.info("Creating %s between %s and %s", self.relationship, self.product_id, self.recommendation_product_id)
         db.session.add(self)
         db.session.commit()
 
@@ -63,20 +63,20 @@ class Recommendation(db.Model):
         """
         if not self.relationship:
             raise DataValidationError("Update called with empty relationship")
-        logger.info("updating relationship between %s and %s", self.product_id1, self.product_id2)
+        logger.info("updating relationship between %s and %s", self.product_id, self.recommendation_product_id)
         db.session.commit()
 
     def delete(self):
         """
         Removes a recommendation type from the database
         """
-        logger.info("Deleting %s between %s and %s", self.relationship, self.product_id1, self.product_id2)
+        logger.info("Deleting %s between %s and %s", self.relationship, self.product_id, self.recommendation_product_id)
         db.session.delete(self)
         db.session.commit()
 
     def serialize(self):
         """ Serializes a Recommendation into a dictionary """
-        return {"product_id1": self.product_id1, "product_id2": self.product_id2, "relationship": self.relationship.name}
+        return {"product_id": self.product_id, "recommendation_product_id": self.recommendation_product_id, "relationship": self.relationship.name}
 
     def deserialize(self, data):
         """
@@ -86,8 +86,8 @@ class Recommendation(db.Model):
             data (dict): A dictionary containing the resource data
         """
         try:
-            self.product_id1 = data["product_id1"]
-            self.product_id2 = data["product_id2"]
+            self.product_id = data["product_id"]
+            self.recommendation_product_id = data["recommendation_product_id"]
             self.relationship = data["relationship"]
         except KeyError as error:
             raise DataValidationError(
@@ -112,22 +112,24 @@ class Recommendation(db.Model):
         db.init_app(app)
         app.app_context().push()
         db.create_all()  # make our sqlalchemy tables
+        
 
     @classmethod
-    def find(cls, product_id1, product_id2):
+    def find(cls, product_id, recommendation_product_id):
         """ Finds relationship between two product ids """
-        logger.info("Processing lookup for id %s %s", product_id1, product_id2)
-        return cls.query.get((product_id1, product_id2))
+        logger.info("Processing lookup for id %s %s", product_id, recommendation_product_id)
+        return cls.query.get((product_id, recommendation_product_id))
 
     @classmethod
     def all(cls):
         """Returns all of the Pets in the database"""
         logger.info("Processing all recommendation")
+        db.drop_all()
         return cls.query.all()
 
     @classmethod
     def find_by_id_and_type(cls, product_id, type):
         """Returns all Recommendations with the given product id and type"""
         logger.info("Processing id and type query for id %s and type %s", product_id, type)
-        return cls.query.filter(cls.product_id1 == product_id).filter(cls.relationship == type)
+        return cls.query.filter(cls.product_id == product_id).filter(cls.relationship == type)
 

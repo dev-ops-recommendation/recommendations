@@ -47,11 +47,11 @@ class TestRecommendationModel(unittest.TestCase):
 
     def test_create_a_recommendation(self):
         """ Test create a recommendation """
-        recommendation = Recommendation(product_id1=1, product_id2=2, relationship=Type.UP_SELL)
+        recommendation = Recommendation(product_id=1, recommendation_product_id=2, relationship=Type.UP_SELL)
         self.assertTrue(recommendation != None)
         self.assertEquals(recommendation.relationship, Type.UP_SELL)
-        self.assertEquals(recommendation.product_id1, 1)
-        self.assertEquals(recommendation.product_id2, 2)
+        self.assertEquals(recommendation.product_id, 1)
+        self.assertEquals(recommendation.recommendation_product_id, 2)
 
     def test_delete_a_recommendation(self): 
         """ Delete a recommendation from the database """
@@ -63,33 +63,33 @@ class TestRecommendationModel(unittest.TestCase):
 
     def test_serialize_a_recommendation(self):
         """ Test serialization of a Recommendation """
-        recommendation = Recommendation(product_id1=1, product_id2=2, relationship=Type.UP_SELL)
+        recommendation = Recommendation(product_id=1, recommendation_product_id=2, relationship=Type.UP_SELL)
         data = recommendation.serialize()
         self.assertNotEqual(data, None)
-        self.assertIn("product_id1", data)
-        self.assertEqual(data["product_id1"], recommendation.product_id1)
-        self.assertIn("product_id2", data)
-        self.assertEqual(data["product_id2"], recommendation.product_id2)
+        self.assertIn("product_id", data)
+        self.assertEqual(data["product_id"], recommendation.product_id)
+        self.assertIn("recommendation_product_id", data)
+        self.assertEqual(data["recommendation_product_id"], recommendation.recommendation_product_id)
         self.assertIn("relationship", data)
         self.assertEqual(data["relationship"], recommendation.relationship.name)
 
     def test_deserialize_a_recommendation(self):
         """ Test deserialization of a Recommendation """
         data = {
-            "product_id1": 1,
-            "product_id2": 2,
+            "product_id": 1,
+            "recommendation_product_id": 2,
             "relationship": Type.UP_SELL
         }
         recommendation = Recommendation()
         recommendation.deserialize(data)
         self.assertNotEqual(recommendation, None)
-        self.assertEqual(recommendation.product_id1, 1)
-        self.assertEqual(recommendation.product_id2, 2)
+        self.assertEqual(recommendation.product_id, 1)
+        self.assertEqual(recommendation.recommendation_product_id, 2)
         self.assertEqual(recommendation.relationship, Type.UP_SELL)
 
     def test_deserialize_missing_data(self):
         """ Test deserialization of a Recommendation with missing data """
-        data = {"product_id1": 1}
+        data = {"product_id": 1}
         recommendation = Recommendation()
         self.assertRaises(DataValidationError, recommendation.deserialize, data)
 
@@ -119,10 +119,10 @@ class TestRecommendationModel(unittest.TestCase):
         logging.debug(recommendations)
 
         # find the 2nd recommendation in the list
-        recommendation = Recommendation.find(recommendations[1].product_id1, recommendations[1].product_id2)
+        recommendation = Recommendation.find(recommendations[1].product_id, recommendations[1].recommendation_product_id)
         self.assertIsNot(recommendation, None)
-        self.assertEqual(recommendation.product_id1, recommendations[1].product_id1)
-        self.assertEqual(recommendation.product_id2, recommendations[1].product_id2)
+        self.assertEqual(recommendation.product_id, recommendations[1].product_id)
+        self.assertEqual(recommendation.recommendation_product_id, recommendations[1].recommendation_product_id)
         self.assertEqual(recommendation.relationship, recommendations[1].relationship)
 
     def test_update_a_recommendation(self):
@@ -138,8 +138,8 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEqual(recommendation.relationship.name, 'CROSS_SELL')
         recommendations = recommendation.all()
         self.assertEqual(len(recommendations), 1)
-        self.assertEqual(recommendations[0].product_id1, recommendation.product_id1)
-        self.assertEqual(recommendations[0].product_id2, recommendation.product_id2)
+        self.assertEqual(recommendations[0].product_id, recommendation.product_id)
+        self.assertEqual(recommendations[0].recommendation_product_id, recommendation.recommendation_product_id)
         self.assertEqual(recommendations[0].relationship, recommendation.relationship)
 
     def test_update_a_recommendation_no_relationship(self):
@@ -155,9 +155,9 @@ class TestRecommendationModel(unittest.TestCase):
         """Find a recommendation type by product id and relationship id"""
         query_id = 1
         query_type = Type.UP_SELL
-        recommendations = [Recommendation(product_id1 = query_id, product_id2 = 2, relationship = query_type),
-                            Recommendation(product_id1 = query_id, product_id2 = 10, relationship = query_type), 
-                            Recommendation(product_id1 = query_id, product_id2 = 15, relationship = Type.ACCESSORY)]
+        recommendations = [Recommendation(product_id = query_id, recommendation_product_id = 2, relationship = query_type),
+                            Recommendation(product_id = query_id, recommendation_product_id = 10, relationship = query_type), 
+                            Recommendation(product_id = query_id, recommendation_product_id = 15, relationship = Type.ACCESSORY)]
 
         for recommendation in recommendations:
             recommendation.create()
@@ -167,7 +167,7 @@ class TestRecommendationModel(unittest.TestCase):
         results = Recommendation.find_by_id_and_type(query_id, Type.UP_SELL)
         for recommendation in results:
             self.assertIsNot(recommendation, None)
-            self.assertEqual(recommendation.product_id1, query_id)
+            self.assertEqual(recommendation.product_id, query_id)
             self.assertEqual(recommendation.relationship, query_type)
 
 
