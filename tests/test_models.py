@@ -1,5 +1,5 @@
 """
-Test cases for YourResourceModel Model
+Test cases for Recommendations Model
 
 """
 import logging
@@ -16,7 +16,7 @@ DATABASE_URI = os.getenv(
 #  RECOMMENDATIONS   M O D E L   T E S T   C A S E S
 ######################################################################
 class TestRecommendationModel(unittest.TestCase):
-    """ Test Cases for YourResourceModel Model """
+    """ Test Cases for Recommendations Model """
 
     @classmethod
     def setUpClass(cls):
@@ -142,12 +142,32 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEqual(recommendations[0].product_id2, recommendation.product_id2)
         self.assertEqual(recommendations[0].relationship, recommendation.relationship)
 
-    def test_update_a_recommendation_no_realtionship(self):
-        """Update a recommendation type by two product ids"""
+    def test_update_a_recommendation_no_relationship(self):
+        """Update a recommendation type by two product ids without relationship"""
         recommendation = RecommendationFactory()
         logging.debug(recommendation)
         recommendation.create()
         logging.debug(recommendation)
         recommendation.relationship = None
         self.assertRaises(DataValidationError, recommendation.update)
+
+    def test_find_recommendation_by_id_and_type(self):
+        """Find a recommendation type by product id and relationship id"""
+        query_id = 1
+        query_type = Type.UP_SELL
+        recommendations = [Recommendation(product_id1 = query_id, product_id2 = 2, relationship = query_type),
+                            Recommendation(product_id1 = query_id, product_id2 = 10, relationship = query_type), 
+                            Recommendation(product_id1 = query_id, product_id2 = 15, relationship = Type.ACCESSORY)]
+
+        for recommendation in recommendations:
+            recommendation.create()
+        logging.debug(recommendations)
+
+        # find the 2nd recommendation in the list
+        results = Recommendation.find_by_id_and_type(query_id, Type.UP_SELL)
+        for recommendation in results:
+            self.assertIsNot(recommendation, None)
+            self.assertEqual(recommendation.product_id1, query_id)
+            self.assertEqual(recommendation.relationship, query_type)
+
 

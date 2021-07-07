@@ -1,5 +1,5 @@
 """
-Models for YourResourceModel
+Models for Recommendations
 
 All of the models are stored in this module
 """
@@ -75,7 +75,7 @@ class Recommendation(db.Model):
         db.session.commit()
 
     def serialize(self):
-        """ Serializes a YourResourceModel into a dictionary """
+        """ Serializes a Recommendation into a dictionary """
         return {"product_id1": self.product_id1, "product_id2": self.product_id2, "relationship": self.relationship.name}
 
     def deserialize(self, data):
@@ -91,11 +91,11 @@ class Recommendation(db.Model):
             self.relationship = data["relationship"]
         except KeyError as error:
             raise DataValidationError(
-                "Invalid YourResourceModel: missing " + error.args[0]
+                "Invalid Recommendation Model: missing " + error.args[0]
             )
         except TypeError as error:
             raise DataValidationError(
-                "Invalid YourResourceModel: body of request contained bad or no data"
+                "Invalid Recommendation Model: body of request contained bad or no data"
             )
         return self
     
@@ -125,4 +125,9 @@ class Recommendation(db.Model):
         logger.info("Processing all recommendation")
         return cls.query.all()
 
+    @classmethod
+    def find_by_id_and_type(cls, product_id, type):
+        """Returns all Recommendations with the given product id and type"""
+        logger.info("Processing id and type query for id %s and type %s", product_id, type)
+        return cls.query.filter(cls.product_id1 == product_id).filter(cls.relationship == type)
 
