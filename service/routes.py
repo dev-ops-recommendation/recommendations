@@ -27,16 +27,17 @@ from . import app
 def index():
     """ Root URL response """
     return (
-        "Reminder: return some useful information in json format about the service here",
+        jsonify(
+            name="Recommendations REST API Service",
+            version="1.0",
+            paths=url_for("list_recommendations", _external=True),
+        ),
         status.HTTP_200_OK,
     )
-
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
 ######################################################################
-
-
 def init_db():
     """ Initialies the SQLAlchemy app """
     global app
@@ -79,7 +80,10 @@ def create_recommendations():
     return make_response(
         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
     )
-##############################################################
+
+######################################################################
+# GET A RECOMMENDATION (RELATIONSHIP BETWEEN PRODUCTS)
+######################################################################
 @app.route("/recommendations/products/<int:product_id1>/related-products/<int:product_id2>", methods=["GET"])
 def get_recommendations(product_id1, product_id2):
     """
@@ -93,7 +97,9 @@ def get_recommendations(product_id1, product_id2):
         raise NotFound("Recommendation for product id {} and {} was not found.".format(product_id1, product_id2))
     return make_response(jsonify(recommendation.serialize()), status.HTTP_200_OK)
 
-
+##############################################################
+# UPDATE A RECOMMENDATION (RELATIONSHIP BETWEEN PRODUCTS)
+######################################################################
 @app.route("/recommendations/products/<int:product_id1>/related-products/<int:product_id2>", methods=["PUT"])
 def update_recommendations(product_id1, product_id2):
     """
@@ -114,6 +120,9 @@ def update_recommendations(product_id1, product_id2):
         jsonify(message), status.HTTP_200_OK
     )
 
+##############################################################
+# DELETE A RECOMMENDATION (RELATIONSHIP BETWEEN PRODUCTS)
+######################################################################
 @app.route("/recommendations/products/<int:product_id1>/related-products/<int:product_id2>", methods=["DELETE"])
 def delete_recommendations(product_id1, product_id2):
     """
@@ -132,3 +141,16 @@ def check_content_type(content_type):
         return
     app.logger.error("Invalid Content-Type: [%s]", request.headers.get("Content-Type"))
     abort(status.HTTP_415_UNSUPPORTED_MEDIA_TYPE, "Content-Type must be {}".format(content_type))
+
+######################################################################
+# QUERY RECOMMENDATIONS FOR ID AND TYPE
+######################################################################
+@app.route("/recommendations/products/<int:product_id>", methods=["GET"])
+def query_recommendations(product_id):
+    """ Returns all of the Recommendations """
+    type = request.args.get('type')
+    app.logger.info("Request for recommendations query for id %s and type %s", product_id, type)
+    recommendations = Recommendation.find_by_id_and_type(product_id, type)
+
+    results = [recommendation.serialize() for recommendation in recommendations]
+    return make_response(jsonify(results), status.HTTP_200_OK)

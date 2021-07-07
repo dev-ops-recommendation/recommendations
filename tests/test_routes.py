@@ -1,5 +1,5 @@
 """
-TestYourResourceModel API Service Test Suite
+TestRecommendationsModel API Service Test Suite
 
 Test cases can be run with the following:
   nosetests -v --with-spec --spec-color
@@ -146,8 +146,20 @@ class TestRecommendationServer(TestCase):
     
     def test_list_recommendations(self):
         """Get a list of recommendations"""
+        test_recommendation = RecommendationFactory()
+        logging.debug(test_recommendation)
+        resp = self.app.post(
+            "/recommendations", json=test_recommendation.serialize(), content_type="application/json"
+        )  
         resp = self.app.get("/recommendations")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        result = resp.get_json()
+        self.assertEqual(len(result), 1)
+        result_recommendation = result[0]
+
+        self.assertEqual(result_recommendation['product_id1'], test_recommendation.product_id1)
+        self.assertEqual(result_recommendation['product_id2'], test_recommendation.product_id2)
+        self.assertEqual(result_recommendation['relationship'], test_recommendation.relationship.name)
 
     def test_update_recommendation(self):
         """Update an existing recommendation"""
@@ -187,4 +199,25 @@ class TestRecommendationServer(TestCase):
         """ create a Recommendation with no content type """
         resp = self.app.put("/recommendations/products/0/related-products/0")
         self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+
+    def test_query_recommendation_by_id_and_type(self):
+        """Update an existing recommendation"""
+        # create a recommendation to update
+        test_recommendation = RecommendationFactory()
+        logging.debug(test_recommendation)
+        resp = self.app.post(
+            "/recommendations", json=test_recommendation.serialize(), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        # query the recommendation
+        
+        resp = self.app.get(
+            "/recommendations/products/{}?type={}".format(test_recommendation.product_id1,
+                                                                      test_recommendation.relationship.name)
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        result = resp.get_json()
+        self.assertEqual(len(result), 1)
+        self.assertEqual(result[0]["relationship"], test_recommendation.relationship.name)
 
