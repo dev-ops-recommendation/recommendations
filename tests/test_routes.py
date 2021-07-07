@@ -201,7 +201,7 @@ class TestRecommendationServer(TestCase):
         self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
     def test_query_recommendation_by_id_and_type(self):
-        """Update an existing recommendation"""
+        """Query recommendations for a specific id and type"""
         # create a recommendation to update
         test_recommendation = RecommendationFactory()
         logging.debug(test_recommendation)
@@ -220,4 +220,3 @@ class TestRecommendationServer(TestCase):
         result = resp.get_json()
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0]["relationship"], test_recommendation.relationship.name)
-
