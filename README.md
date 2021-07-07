@@ -148,6 +148,15 @@ GET http://0.0.0.0:5000/recommendations/products/1?type=UP_SELL
     }
 ]
 ```
+
+### Stateful Action - Clear all data entries
+To reset the database, simply call   
+DELETE http://0.0.0.0:5000/recommendations
+
+All data entries will be cleared and GET http://0.0.0.0:5000/recommendations should return empty list now
+
+
+
 ## Team Member
 * [Mandy Xu - mandy-cmd && emxxxm](https://github.com/mandy-cmd)
 * [Sarah Lin - procrasprincess](https://github.com/procrasprincess)

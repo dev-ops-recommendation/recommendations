@@ -170,4 +170,15 @@ class TestRecommendationModel(unittest.TestCase):
             self.assertEqual(recommendation.product_id1, query_id)
             self.assertEqual(recommendation.relationship, query_type)
 
+    def test_clear_data(self):
+        '''Clear all data entries'''
+        recommendations = RecommendationFactory.create_batch(2)
+        for recommendation in recommendations:
+            recommendation.create()
+        self.assertEqual(len(Recommendation.all()), 2)
+
+        Recommendation.clear()
+        self.assertEqual(len(Recommendation.all()), 0)
+
+
 

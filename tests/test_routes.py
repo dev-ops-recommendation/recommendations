@@ -220,3 +220,24 @@ class TestRecommendationServer(TestCase):
         result = resp.get_json()
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0]["relationship"], test_recommendation.relationship.name)
+
+    def test_clear_all_recommendations(self):
+        """ Delete all recommendations"""
+        self._create_recommendations(1)[0]
+
+        #Expecting one recommendation
+        resp = self.app.get("/recommendations")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        result = resp.get_json()
+        self.assertEqual(len(result), 1)
+        
+        #Calling clear the database
+        resp = self.app.delete("/recommendations")
+        self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(len(resp.data), 0)
+
+        #Expecing 0 recommendation now
+        resp = self.app.get("/recommendations")
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        result = resp.get_json()
+        self.assertEqual(len(result), 0)
