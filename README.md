@@ -130,7 +130,24 @@ body
 ```
 If no relationship exits between given product ids, a 404 error will be issued
 
-
+### Query recommendation of a product id for a certain type
+Query endpoint takes a product id and relationship type. It will return empty list if no result or will return a list of relationship for input product_id and relationship type.   
+Example result after creating relationship {1,2,UP_SELL}, {1,10,UP_SELL}, {1,15,CROSS_SELL}  
+GET http://0.0.0.0:5000/recommendations/products/1?type=UP_SELL  
+```
+[
+    {
+        "product_id1": 1,
+        "product_id2": 2,
+        "relationship": "UP_SELL"
+    },
+    {
+        "product_id1": 1,
+        "product_id2": 10,
+        "relationship": "UP_SELL"
+    }
+]
+```
 ## Team Member
 * [Mandy Xu - mandy-cmd && emxxxm](https://github.com/mandy-cmd)
 * [Sarah Lin - procrasprincess](https://github.com/procrasprincess)
