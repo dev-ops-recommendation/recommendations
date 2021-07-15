@@ -75,7 +75,7 @@ ACCESSORY
 Other kinds of relationships will result in ```Cannot create relationship``` error
 
 ### Read a recommendation between two product ids
-```GET http://0.0.0.0:5000/recommendations/products/1/related-products/2```   
+```GET http://0.0.0.0:5000/recommendations/1/recommended-products/2```   
 returns    
 ```
 {
@@ -87,7 +87,7 @@ returns
 If no relationship exits between given product ids, a 404 error will be issued  
 
 ### Update a recommendation between two product ids
-```PUT http://0.0.0.0:5000/recommendations/products/1/related-products/2``` 
+```PUT http://0.0.0.0:5000/recommendations/1/recommended-products/2``` 
 body  
 ```
 {
@@ -107,7 +107,7 @@ returns
 If no relationship exits between given product ids, a 404 error will be issued 
 
 ### Delete a recommendation between two product ids
-```DELETE http://0.0.0.0:5000/recommendations/products/1/related-products/2```
+```DELETE http://0.0.0.0:5000/recommendations/1/recommended-products/2```
 body
 ```
 {
@@ -119,7 +119,7 @@ body
 If no relationship exits between given product ids, a 404 error will be issued
 
 ### List a recommendation between two product ids
-```GET http://0.0.0.0:5000/recommendations/products/1/related-products/2```
+```GET http://0.0.0.0:5000/recommendations/1/recommended-products/2```
 body
 ```
 {
@@ -133,7 +133,7 @@ If no relationship exits between given product ids, a 404 error will be issued
 ### Query recommendation of a product id for a certain type
 Query endpoint takes a product id and relationship type. It will return empty list if no result or will return a list of relationship for input product_id and relationship type.   
 Example result after creating relationship {1,2,UP_SELL}, {1,10,UP_SELL}, {1,15,CROSS_SELL}  
-GET http://0.0.0.0:5000/recommendations/products/1?type=UP_SELL  
+GET http://0.0.0.0:5000/recommendations/1?type=UP_SELL  
 ```
 [
     {
