@@ -5,8 +5,8 @@ $(function () {
 
     // Updates the form with data from the response
     function update_form_data(res) {
-        $("#product_id").val(res._id);
-        $("#recommendation_product_id").val(res.name);
+        $("#product_id").val(res.product_id);
+        $("#recommendation_product_id").val(res.recommendation_product_id);
         $("#relationship").val(res.relationship);
     }
 
@@ -38,7 +38,7 @@ $(function () {
             "recommendation_product_id": recommendation_product_id,
             "relationship": relationship
         };
-        console.log(relationship, product_id, recommendation_product_id);
+
         var ajax = $.ajax({
             type: "POST",
             url: "/recommendations",
@@ -66,7 +66,7 @@ $(function () {
         var product_id = $("#product_id").val();
         
         var relationship = $("#relationship").val();
-        var recommendation_product_id = $("#recommendation_product_id").val() == "true";
+        var recommendation_product_id = $("#recommendation_product_id").val();
 
         var data = {
             "product_id": product_id,
@@ -167,15 +167,17 @@ $(function () {
         var relationship = $("#relationship").val();
        
         var queryString = ""
-
+        if (product_id) {
+            queryString += "/" + product_id
+        }
         if (relationship) {
-            queryString += relationship
+            queryString += "?type=" + relationship
         }
     
 
         var ajax = $.ajax({
             type: "GET",
-            url: "/recommendations/" + product_id + "?relationship=" + queryString,
+            url: "/recommendations" + queryString,
             contentType: "application/json",
             data: ''
         })

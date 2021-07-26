@@ -34,15 +34,15 @@ def step_impl(context):
     # list all of the recommendations and delete them one by one
     context.resp = requests.get(context.base_url + '/recommendations', headers=headers)
     expect(context.resp.status_code).to_equal(200)
-    for recommendation in context.resp.json():
-        context.resp = requests.delete(context.base_url + '/recommendations/' + str(recommendation["_id"]), headers=headers)
-        expect(context.resp.status_code).to_equal(204)
+    
+    context.resp = requests.delete(context.base_url + '/recommendations', headers=headers)
+    expect(context.resp.status_code).to_equal(204)
     
     # load the database with new recommendations
     create_url = context.base_url + '/recommendations'
     for row in context.table:
         data = {
-            "id": row['id'],
+            "product_id": row['product_id'],
             "recommendation_product_id": row['recommendation_product_id'],
             "relationship": row['relationship']
             }

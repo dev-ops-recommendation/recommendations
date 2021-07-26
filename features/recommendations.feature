@@ -5,10 +5,9 @@ Feature: The recommendation store service back-end
 
 Background:
     Given the following recommendations
-        | id       | recommendation_product_id | relationship |
+        | product_id       | recommendation_product_id | relationship |
         | 1       | 10      | UP_SELL      |
-        | 2      | 3      | UP_SELL      |
-        | 1        | 2     | GO_TOGETHER     |
+
 
 Scenario: The server is running
     When I visit the "Home Page"
@@ -17,20 +16,20 @@ Scenario: The server is running
 
 Scenario: Create a recommendation
     When I visit the "Home Page"
-    And I set the "Recommendation ID" to "2"
-    And I set the "Recommendation Product ID" to "7"
-    And I select "Type" to "UP_SELL"
+    And I set the "product_id" to "2"
+    And I set the "recommendation_product_id" to "7"
+    And I set the "relationship" to "UP_SELL"
     And I press the "Create" button
     Then I should see the message "Success"
-    When I copy the "Recommendation ID" field
+    When I copy the "product_id" field
     And I press the "Clear" button
-    Then the "Recommendation ID" field should be empty
-    And the "Recommendation Product ID" field should be empty
-    And the "Type" field should be empty
-    When I paste the "Recommendation ID" field
-    And I set the "Recommendation Product ID" to "7"
+    Then the "product_id" field should be empty
+    And the "recommendation_product_id" field should be empty
+    And the "relationship" field should be empty
+    When I paste the "product_id" field
+    And I set the "recommendation_product_id" to "7"
     And I press the "Retrieve" button
-    Then I should see "UP_SELL" in the "Type" field
+    Then I should see "UP_SELL" in the "relationship" field
     
 
 # Scenario: List all recommendations
