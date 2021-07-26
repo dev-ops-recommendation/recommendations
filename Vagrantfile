@@ -76,6 +76,9 @@ Vagrant.configure(2) do |config|
     echo "****************************************"
     echo " INSTALLING PYTHON 3 ENVIRONMENT..."
     echo "****************************************"
+    # Install Chromium Driver
+    apt-get install -y chromium-chromedriver
+
     # Install Python 3 and dev tools 
     apt-get update
     apt-get install -y git vim tree python3 python3-pip python3-venv

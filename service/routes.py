@@ -40,14 +40,7 @@ DELETE /recommendations - deletes all Recommendation record in the database
 @app.route("/")
 def index():
     """ Root URL response """
-    return (
-        jsonify(
-            name="Recommendations REST API Service",
-            version="1.0",
-            paths=url_for("list_recommendations", _external=True),
-        ),
-        status.HTTP_200_OK,
-    )
+    return app.send_static_file("index.html")
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
