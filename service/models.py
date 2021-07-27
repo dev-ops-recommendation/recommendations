@@ -42,6 +42,7 @@ class Recommendation(db.Model):
     relationship = db.Column(
         db.Enum(Type), nullable=False, server_default=(Type.GO_TOGETHER.name)
         )
+    likes = db.Column(db.Integer, server_default = 0)
     ### -----------------------------------------------------------
     ### INSTANCE METHODS
     ### -----------------------------------------------------------
@@ -66,6 +67,10 @@ class Recommendation(db.Model):
         logger.info("updating relationship between %s and %s", self.product_id, self.recommendation_product_id)
         db.session.commit()
 
+    def like(self):
+        logger.info("like the recommendation for product %s and product %s, like count is %s", self.product_id, self.recommendation_product_id, self.likes)
+        db.session.commit()
+
     def delete(self):
         """
         Removes a recommendation type from the database
@@ -76,7 +81,7 @@ class Recommendation(db.Model):
 
     def serialize(self):
         """ Serializes a Recommendation into a dictionary """
-        return {"product_id": self.product_id, "recommendation_product_id": self.recommendation_product_id, "relationship": self.relationship.name}
+        return {"product_id": self.product_id, "recommendation_product_id": self.recommendation_product_id, "relationship": self.relationship.name, "likes": self.likes}
 
     def deserialize(self, data):
         """
