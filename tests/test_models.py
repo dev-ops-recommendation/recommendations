@@ -170,6 +170,29 @@ class TestRecommendationModel(unittest.TestCase):
             self.assertEqual(recommendation.product_id, query_id)
             self.assertEqual(recommendation.relationship, query_type)
 
+    
+    def test_update_a_recommendation_likes(self):
+        """Like a recommendation"""
+        recommendation = RecommendationFactory()
+
+        recommendation.create()
+
+        self.assertEquals(recommendation.likes, 0)
+        recommendation.likes += 1
+        recommendation.update()
+        self.assertEqual(recommendation.likes, 1)
+    
+    def test_update_a_recommendation_dislikes(self):
+        """Dislike a recommendation"""
+        recommendation = RecommendationFactory()
+
+        recommendation.create()
+
+        self.assertEquals(recommendation.dislikes, 0)
+        recommendation.dislikes += 1
+        recommendation.update()
+        self.assertEqual(recommendation.dislikes, 1)
+    
     def test_clear_data(self):
         '''Clear all data entries'''
         recommendations = RecommendationFactory.create_batch(2)

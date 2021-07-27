@@ -149,6 +149,32 @@ GET http://0.0.0.0:5000/recommendations/1?type=UP_SELL
 ]
 ```
 
+### Stateful Action - Like a Recommendation
+When a recommendation is created, like count is default to 0  
+To like an existing recommendation, call   
+```PUT http://0.0.0.0:5000/recommendations/1/recommended-products/2/like```   
+```
+{
+    "likes": 1,
+    "product_id": 1,
+    "recommendation_product_id": 2,
+    "relationship": "UP_SELL"
+}
+```
+
+### Stateful Action - Dislike a Recommendation
+When a recommendation is created, dislike count is default to 0  
+To dislike an existing recommendation, call   
+```PUT http://0.0.0.0:5000/recommendations/1/recommended-products/2/dislike```   
+```
+{
+    "dislikes": 1,
+    "product_id": 1,
+    "recommendation_product_id": 2,
+    "relationship": "UP_SELL"
+}
+```
+
 ### Stateful Action - Clear all data entries
 To reset the database, simply call   
 DELETE http://0.0.0.0:5000/recommendations
