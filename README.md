@@ -181,7 +181,6 @@ To like an existing recommendation, call
 }
 ```
 
-
 ### Stateful Action - Clear all data entries
 To reset the database, simply call   
 DELETE http://0.0.0.0:5000/recommendations

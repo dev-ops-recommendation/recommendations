@@ -294,6 +294,7 @@ class TestRecommendationServer(TestCase):
     def test_like_recommendation(self):
         """Like an existing recommendation"""
         # create a recommendation to like
+
         test_recommendation = RecommendationFactory()
 
         resp = self.app.post(
