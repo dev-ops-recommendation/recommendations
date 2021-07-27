@@ -134,6 +134,27 @@ def update_recommendations(product_id, recommendation_product_id):
         jsonify(message), status.HTTP_200_OK
     )
 
+
+##############################################################
+# LIKE A RECOMMENDATION
+######################################################################
+@app.route("/recommendations/<int:product_id>/recommended-products/<int:recommendation_product_id>/like", methods=["PUT"])
+def like_recommendations(product_id, recommendation_product_id):
+    """
+    like a relationship
+    """
+    app.logger.info("Request to like a recommendation between %s and %s", product_id, recommendation_product_id)
+    recommendation = Recommendation.find(product_id, recommendation_product_id)
+    if not recommendation:
+        raise NotFound("Recommendation for product id {} and {} was not found.".format(product_id, recommendation_product_id))
+    
+    recommendation.likes += 1
+    recommendation.update()
+    message = recommendation.serialize()
+    return make_response(
+        jsonify(message), status.HTTP_200_OK
+    )
+
 ##############################################################
 # DELETE A RECOMMENDATION (RELATIONSHIP BETWEEN PRODUCTS)
 ######################################################################
