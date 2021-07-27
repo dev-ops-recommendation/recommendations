@@ -241,3 +241,34 @@ class TestRecommendationServer(TestCase):
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         result = resp.get_json()
         self.assertEqual(len(result), 0)
+
+    
+    def test_like_recommendation(self):
+        """Like an existing recommendation"""
+        # create a recommendation to like
+        test_recommendation = RecommendationFactory()
+        
+        resp = self.app.post(
+            "/recommendations", json=test_recommendation.serialize(), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        # like the recommendation
+       
+        resp = self.app.put(
+            "/recommendations/{}/recommended-products/{}/like".format(test_recommendation.product_id,
+                                                                      test_recommendation.recommendation_product_id),
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        resp = self.app.get(
+            "/recommendations/{}/recommended-products/{}".format(test_recommendation.product_id, test_recommendation.recommendation_product_id), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(data["likes"], 1)
+
+    def test_like_recommendation_not_found(self):
+        """ Like a Recommendation thats not found """
+        resp = self.app.put("/recommendations/0/recommended-products/0/like")
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+    

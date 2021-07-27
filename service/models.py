@@ -42,12 +42,12 @@ class Recommendation(db.Model):
     relationship = db.Column(
         db.Enum(Type), nullable=False, server_default=(Type.GO_TOGETHER.name)
         )
-    likes = db.Column(db.Integer, server_default = 0)
+    likes = db.Column(db.Integer, default=0)
     ### -----------------------------------------------------------
     ### INSTANCE METHODS
     ### -----------------------------------------------------------
     def __repr__(self):
-        return "<Recommendation %r product_id=[%s] recommendation_product_id=[%s]>" % (self.relationship, self.product_id, self.recommendation_product_id)
+        return "<Recommendation %r product_id=[%s] recommendation_product_id=[%s] likes=[%s]>" % (self.relationship, self.product_id, self.recommendation_product_id, self.likes)
 
     def create(self):
         """
@@ -66,11 +66,7 @@ class Recommendation(db.Model):
             raise DataValidationError("Update called with empty relationship")
         logger.info("updating relationship between %s and %s", self.product_id, self.recommendation_product_id)
         db.session.commit()
-
-    def like(self):
-        logger.info("like the recommendation for product %s and product %s, like count is %s", self.product_id, self.recommendation_product_id, self.likes)
-        db.session.commit()
-
+        
     def delete(self):
         """
         Removes a recommendation type from the database

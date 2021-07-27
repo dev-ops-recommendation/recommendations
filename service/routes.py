@@ -144,12 +144,10 @@ def like_recommendations(product_id, recommendation_product_id):
     like a relationship
     """
     app.logger.info("Request to like a recommendation between %s and %s", product_id, recommendation_product_id)
-    check_content_type("application/json")
-    
-    old_recommendation = Recommendation.find(product_id, recommendation_product_id)
-    if not old_recommendation:
+    recommendation = Recommendation.find(product_id, recommendation_product_id)
+    if not recommendation:
         raise NotFound("Recommendation for product id {} and {} was not found.".format(product_id, recommendation_product_id))
-    recommendation = old_recommendation
+    
     recommendation.likes += 1
     recommendation.update()
     message = recommendation.serialize()

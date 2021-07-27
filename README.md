@@ -79,6 +79,7 @@ Other kinds of relationships will result in ```Cannot create relationship``` err
 returns    
 ```
 {
+  "likes": 0,
   "product_id": 1,
   "recommendation_product_id": 2,
   "relationship": "UP_SELL"
@@ -99,6 +100,7 @@ body
 returns    
 ```
 {
+  "likes": 0,
   "product_id": 1,
   "recommendation_product_id": 2,
   "relationship": "CROSS_SELL"
@@ -116,13 +118,14 @@ body
   "relationship": "CROSS_SELL"
 }
 ```
-If no relationship exits between given product ids, a 404 error will be issued
 
-### List a recommendation between two product ids
+
+### Read a recommendation between two product ids
 ```GET http://0.0.0.0:5000/recommendations/1/recommended-products/2```
 body
 ```
 {
+  "likes": 0,
   "product_id": 1,
   "recommendation_product_id": 2,
   "relationship": "CROSS_SELL"
@@ -137,11 +140,13 @@ GET http://0.0.0.0:5000/recommendations/1?type=UP_SELL
 ```
 [
     {
+        "likes": 0,
         "product_id": 1,
         "recommendation_product_id": 2,
         "relationship": "UP_SELL"
     },
     {
+        "likes": 0,
         "product_id": 1,
         "recommendation_product_id": 10,
         "relationship": "UP_SELL"
@@ -149,7 +154,21 @@ GET http://0.0.0.0:5000/recommendations/1?type=UP_SELL
 ]
 ```
 
-### Stateful Action - Clear all data entries
+### Stateful Action - Like a Recommendation
+When a recommendation is created, like count is default to 0  
+To like an existing recommendation, call   
+```PUT http://0.0.0.0:5000/recommendations/1/recommended-products/2/like```   
+```
+{
+    "likes": 1,
+    "product_id": 1,
+    "recommendation_product_id": 2,
+    "relationship": "UP_SELL"
+}
+```
+
+
+### Clear all data entries
 To reset the database, simply call   
 DELETE http://0.0.0.0:5000/recommendations
 
