@@ -8,6 +8,7 @@ $(function () {
         $("#product_id").val(res.product_id);
         $("#recommendation_product_id").val(res.recommendation_product_id);
         $("#relationship").val(res.relationship);
+        $('#likescount').html(res.likes);
     }
 
     /// Clears all form fields
@@ -15,6 +16,7 @@ $(function () {
         $("#product_id").val("");
         $("#recommendation_product_id").val("");
         $("#relationship").val("");
+        $('#likescount').html("");
     }
 
     // Updates the flash message area
@@ -149,6 +151,34 @@ $(function () {
     });
 
     // ****************************************
+    // Like a Recommendation
+    // ****************************************
+
+    $("#like-btn").click(function () {
+
+        var product_id = $("#product_id").val();
+        var recommendation_product_id = $("#recommendation_product_id").val();
+
+
+        var ajax = $.ajax({
+            type: "PUT",
+            url: "/recommendations/" + product_id + "/recommended-products/" + recommendation_product_id + "/like",
+            contentType: "application/json",
+            data: '',
+        })
+
+        ajax.done(function(res){
+            update_form_data(res)
+            flash_message("Liked!")
+        });
+
+        ajax.fail(function(res){
+            flash_message("Server error!")
+        });
+    });
+
+
+    // ****************************************
     // Clear the form
     // ****************************************
 
@@ -188,13 +218,14 @@ $(function () {
             $("#search_results").append('<table class="table-striped" cellpadding="10">');
             var header = '<tr>'
             header += '<th style="width:10%">ID</th>'
-            header += '<th style="width:40%">Recommendation Product ID</th>'
-            header += '<th style="width:10%">Relationship</th></tr>'
+            header += '<th style="width:50%">Recommendation Product ID</th>'
+            header += '<th style="width:40%">Relationship</th>'
+            header += '<th style="width:10%">Likes</th></tr>'
             $("#search_results").append(header);
             var firstRecommendation = "";
             for(var i = 0; i < res.length; i++) {
                 var recommendation = res[i];
-                var row = "<tr><td>"+recommendation.product_id+"</td><td>"+recommendation.recommendation_product_id+"</td><td>"+recommendation.relationship+"</td><td>";
+                var row = "<tr><td>"+recommendation.product_id+"</td><td>"+recommendation.recommendation_product_id+"</td><td>"+recommendation.relationship+"</td><td>"+recommendation.likes+"</td><td>";
                 $("#search_results").append(row);
                 if (i == 0) {
                     firstRecommendation = recommendation;
