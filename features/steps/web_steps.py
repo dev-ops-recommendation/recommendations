@@ -150,7 +150,6 @@ def step_impl(context, text_string, element_name):
             text_string
         )
     )
-    context.driver.save_screenshot('search_page.png')
     expect(found).to_be(True)
 
 @when('I change "{element_name}" to "{text_string}"')
