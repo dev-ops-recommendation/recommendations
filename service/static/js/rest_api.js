@@ -5,8 +5,8 @@ $(function () {
 
     // Updates the form with data from the response
     function update_form_data(res) {
-        $("#product_id").val(res._id);
-        $("#recommendation_product_id").val(res.name);
+        $("#product_id").val(res.product_id);
+        $("#recommendation_product_id").val(res.recommendation_product_id);
         $("#relationship").val(res.relationship);
     }
 
@@ -40,9 +40,9 @@ $(function () {
         };
 
         var ajax = $.ajax({
-            relationship: "POST",
+            type: "POST",
             url: "/recommendations",
-            contentrelationship: "application/json",
+            contentType: "application/json",
             data: JSON.stringify(data),
         });
 
@@ -66,7 +66,7 @@ $(function () {
         var product_id = $("#product_id").val();
         
         var relationship = $("#relationship").val();
-        var recommendation_product_id = $("#recommendation_product_id").val() == "true";
+        var recommendation_product_id = $("#recommendation_product_id").val();
 
         var data = {
             "product_id": product_id,
@@ -75,9 +75,9 @@ $(function () {
         };
 
         var ajax = $.ajax({
-                relationship: "PUT",
+                type: "PUT",
                 url: "/recommendations/" + product_id + "/recommended-products/" + recommendation_product_id,
-                contentrelationship: "application/json",
+                contentType: "application/json",
                 data: JSON.stringify(data)
             })
 
@@ -102,9 +102,9 @@ $(function () {
         var recommendation_product_id = $("#recommendation_product_id").val();
 
         var ajax = $.ajax({
-            relationship: "GET",
+            type: "GET",
             url: "/recommendations/" + product_id + "/recommended-products/" + recommendation_product_id,
-            contentrelationship: "application/json",
+            contentType: "application/json",
             data: ''
         })
 
@@ -132,9 +132,9 @@ $(function () {
 
 
         var ajax = $.ajax({
-            relationship: "DELETE",
+            type: "DELETE",
             url: "/recommendations/" + product_id + "/recommended-products/" + recommendation_product_id,
-            contentrelationship: "application/json",
+            contentType: "application/json",
             data: '',
         })
 
@@ -167,16 +167,18 @@ $(function () {
         var relationship = $("#relationship").val();
        
         var queryString = ""
-
+        if (product_id) {
+            queryString += "/" + product_id
+        }
         if (relationship) {
-            queryString += 'relationship=' + relationship
+            queryString += "?type=" + relationship
         }
     
 
         var ajax = $.ajax({
-            relationship: "GET",
-            url: "/recommendations/" + product_id + "/?relationship=" + queryString,
-            contentrelationship: "application/json",
+            type: "GET",
+            url: "/recommendations" + queryString,
+            contentType: "application/json",
             data: ''
         })
 
@@ -186,9 +188,8 @@ $(function () {
             $("#search_results").append('<table class="table-striped" cellpadding="10">');
             var header = '<tr>'
             header += '<th style="width:10%">ID</th>'
-            header += '<th style="width:40%">Name</th>'
-            header += '<th style="width:40%">Category</th>'
-            header += '<th style="width:10%">Available</th></tr>'
+            header += '<th style="width:40%">Recommendation Product ID</th>'
+            header += '<th style="width:10%">Relationship</th></tr>'
             $("#search_results").append(header);
             var firstRecommendation = "";
             for(var i = 0; i < res.length; i++) {
