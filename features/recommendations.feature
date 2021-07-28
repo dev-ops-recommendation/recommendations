@@ -78,3 +78,11 @@ Scenario: Delete a recommendation
     Then I should see the message "Recommendation has been Deleted!"
     
 
+Scenario: Like a recommendation
+    When I visit the "Home Page"
+    And I set the "product_id" to "9"
+    And I set the "recommendation_product_id" to "10"
+    And I press the "Retrieve" button
+    Then I should see "UP_SELL" in the "relationship" field
+    When I press the "Like" button
+    Then I should see the message "Liked!"
