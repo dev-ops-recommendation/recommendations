@@ -16,6 +16,7 @@ from werkzeug.exceptions import NotFound, BadRequest
 # variety of backends including SQLite, MySQL, and PostgreSQL
 from flask_sqlalchemy import SQLAlchemy
 from service.models import Recommendation,Type
+import service.error_handlers
 
 # Import Flask application
 from . import app
