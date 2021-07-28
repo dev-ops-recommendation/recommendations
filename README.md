@@ -1,6 +1,6 @@
 # DevOps Squad Project - Team Recommendations
 
-[![Build Status](https://travis-ci.com/dev-ops-recommendation/recommendations.svg?branch=main)](https://travis-ci.com/dev-ops-recommendation/recommendations)
+[![Build Status](https://travis-ci.com/dev-ops-recommendation/recommendations.svg?branch=main)](https://travis-ci.com/dev-ops-recommendation/recommendations)  [![codecov](https://codecov.io/gh/dev-ops-recommendation/recommendations/branch/main/graph/badge.svg?token=ILG2TMAKL8)](https://codecov.io/gh/dev-ops-recommendation/recommendations)
 
 ## Introduction
  In this DevOps project, each team will have  RESTful microservice that will be developed based on a resource from an eCommerce application. This is the repository for Team Recommendations.
