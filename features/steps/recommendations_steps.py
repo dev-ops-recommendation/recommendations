@@ -31,10 +31,7 @@ from compare import expect
 def step_impl(context):
     """ Delete all recommendations and load new ones """
     headers = {'Content-Type': 'application/json'}
-    # list all of the recommendations and delete them one by one
-    context.resp = requests.get(context.base_url + '/recommendations', headers=headers)
-    expect(context.resp.status_code).to_equal(200)
-    
+    # Delete all recommendations
     context.resp = requests.delete(context.base_url + '/recommendations', headers=headers)
     expect(context.resp.status_code).to_equal(204)
     
