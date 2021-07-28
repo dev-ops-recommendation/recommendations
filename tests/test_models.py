@@ -113,17 +113,17 @@ class TestRecommendationModel(unittest.TestCase):
 
     def test_find_recommendation_type(self):
         """Find a recommendation type by two product ids"""
-        recommendations = RecommendationFactory.create_batch(2)
+        recommendations = RecommendationFactory.create_batch(1)
         for recommendation in recommendations:
             recommendation.create()
         logging.debug(recommendations)
 
-        # find the 2nd recommendation in the list
-        recommendation = Recommendation.find(recommendations[1].product_id, recommendations[1].recommendation_product_id)
+        # find the recommendation in the list
+        recommendation = Recommendation.find(recommendations[0].product_id, recommendations[0].recommendation_product_id)
         self.assertIsNot(recommendation, None)
-        self.assertEqual(recommendation.product_id, recommendations[1].product_id)
-        self.assertEqual(recommendation.recommendation_product_id, recommendations[1].recommendation_product_id)
-        self.assertEqual(recommendation.relationship, recommendations[1].relationship)
+        self.assertEqual(recommendation.product_id, recommendations[0].product_id)
+        self.assertEqual(recommendation.recommendation_product_id, recommendations[0].recommendation_product_id)
+        self.assertEqual(recommendation.relationship, recommendations[0].relationship)
 
     def test_update_a_recommendation(self):
         """Update a recommendation type by two product ids"""
@@ -185,10 +185,10 @@ class TestRecommendationModel(unittest.TestCase):
         
     def test_clear_data(self):
         '''Clear all data entries'''
-        recommendations = RecommendationFactory.create_batch(2)
+        recommendations = RecommendationFactory.create_batch(1)
         for recommendation in recommendations:
             recommendation.create()
-        self.assertEqual(len(Recommendation.all()), 2)
+        self.assertEqual(len(Recommendation.all()), 1)
 
         Recommendation.clear()
         self.assertEqual(len(Recommendation.all()), 0)
