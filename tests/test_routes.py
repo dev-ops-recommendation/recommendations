@@ -80,7 +80,7 @@ class TestRecommendationServer(TestCase):
         # get the id of a pet
         test_recommendation = self._create_recommendations(1)[0]
         resp = self.app.get(
-            "/recommendations/products/{}/related-products/{}".format(test_recommendation.product_id, test_recommendation.recommendation_product_id), content_type="application/json"
+            "/recommendations/{}/recommended-products/{}".format(test_recommendation.product_id, test_recommendation.recommendation_product_id), content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
@@ -88,7 +88,7 @@ class TestRecommendationServer(TestCase):
     
     def test_get_recommendation_not_found(self):
         """ Get a Recommendation thats not found """
-        resp = self.app.get("/recommendations/products/0/related-products/0")
+        resp = self.app.get("/recommendations/0/recommended-products/0")
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
 
@@ -116,13 +116,13 @@ class TestRecommendationServer(TestCase):
         """ Delete a recommendation """
         test_recommendation = self._create_recommendations(1)[0]
         resp = self.app.delete(
-            "/recommendations/products/{}/related-products/{}".format(test_recommendation.product_id, test_recommendation.recommendation_product_id),
+            "/recommendations/{}/recommended-products/{}".format(test_recommendation.product_id, test_recommendation.recommendation_product_id),
             content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(len(resp.data), 0)
         resp = self.app.get(
-            "/recommendations/products/{}/related-products/{}".format(test_recommendation.product_id, test_recommendation.recommendation_product_id),
+            "/recommendations/{}/recommended-products/{}".format(test_recommendation.product_id, test_recommendation.recommendation_product_id),
             content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
@@ -176,7 +176,7 @@ class TestRecommendationServer(TestCase):
         new_recommendation["relationship"] = "CROSS_SELL"
         logging.debug(new_recommendation)
         resp = self.app.put(
-            "/recommendations/products/{}/related-products/{}".format(test_recommendation.product_id,
+            "/recommendations/{}/recommended-products/{}".format(test_recommendation.product_id,
                                                                       test_recommendation.recommendation_product_id),
             json=new_recommendation,
             content_type="application/json"
@@ -191,13 +191,13 @@ class TestRecommendationServer(TestCase):
         test_recommendation.product_id = 0
         test_recommendation.recommendation_product_id = 0
         logging.debug(test_recommendation)
-        resp = self.app.put("/recommendations/products/0/related-products/0",json=test_recommendation.serialize(),
+        resp = self.app.put("/recommendations/0/recommended-products/0",json=test_recommendation.serialize(),
             content_type="application/json")
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_update_recommendation_no_content_type(self):
         """ create a Recommendation with no content type """
-        resp = self.app.put("/recommendations/products/0/related-products/0")
+        resp = self.app.put("/recommendations/0/recommended-products/0")
         self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
     def test_query_recommendation_by_id_and_type(self):
@@ -213,7 +213,7 @@ class TestRecommendationServer(TestCase):
         # query the recommendation
         
         resp = self.app.get(
-            "/recommendations/products/{}?type={}".format(test_recommendation.product_id,
+            "/recommendations/{}?type={}".format(test_recommendation.product_id,
                                                                       test_recommendation.relationship.name)
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
@@ -241,3 +241,34 @@ class TestRecommendationServer(TestCase):
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         result = resp.get_json()
         self.assertEqual(len(result), 0)
+
+    
+    def test_like_recommendation(self):
+        """Like an existing recommendation"""
+        # create a recommendation to like
+        test_recommendation = RecommendationFactory()
+        
+        resp = self.app.post(
+            "/recommendations", json=test_recommendation.serialize(), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
+
+        # like the recommendation
+       
+        resp = self.app.put(
+            "/recommendations/{}/recommended-products/{}/like".format(test_recommendation.product_id,
+                                                                      test_recommendation.recommendation_product_id),
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        resp = self.app.get(
+            "/recommendations/{}/recommended-products/{}".format(test_recommendation.product_id, test_recommendation.recommendation_product_id), content_type="application/json"
+        )
+        self.assertEqual(resp.status_code, status.HTTP_200_OK)
+        data = resp.get_json()
+        self.assertEqual(data["likes"], 1)
+
+    def test_like_recommendation_not_found(self):
+        """ Like a Recommendation thats not found """
+        resp = self.app.put("/recommendations/0/recommended-products/0/like")
+        self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+    

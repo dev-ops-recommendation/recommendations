@@ -26,11 +26,11 @@ Recommendations Service
 Paths:
 ------
 GET /recommendations - Returns a list all of the Recommendations
-GET /recommendations/{id}/related-products/{id} - Returns the Recommendation with a given id number and related product id
-GET /recommendations/products/{id}?type={relationship-type}
+GET /recommendations/{id}/recommended-products/{id} - Returns the Recommendation with a given id number and related product id
+GET /recommendations/{id}?type={relationship-type}
 POST /recommendations - creates a new Recommendation record in the database
-PUT /recommendations/{id}/related-products/{id} - updates a Recommendation record in the database
-DELETE /recommendations/{id}/related-products/{id} - deletes a Recommendation record in the database
+PUT /recommendations/{id}/recommended-products/{id} - updates a Recommendation record in the database
+DELETE /recommendations/{id}/recommended-products/{id} - deletes a Recommendation record in the database
 DELETE /recommendations - deletes all Recommendation record in the database
 """
 
@@ -40,14 +40,7 @@ DELETE /recommendations - deletes all Recommendation record in the database
 @app.route("/")
 def index():
     """ Root URL response """
-    return (
-        jsonify(
-            name="Recommendations REST API Service",
-            version="1.0",
-            paths=url_for("list_recommendations", _external=True),
-        ),
-        status.HTTP_200_OK,
-    )
+    return app.send_static_file("index.html")
 
 ######################################################################
 #  U T I L I T Y   F U N C T I O N S
@@ -98,7 +91,7 @@ def create_recommendations():
 ######################################################################
 # GET A RECOMMENDATION (RELATIONSHIP BETWEEN PRODUCTS)
 ######################################################################
-@app.route("/recommendations/products/<int:product_id>/related-products/<int:recommendation_product_id>", methods=["GET"])
+@app.route("/recommendations/<int:product_id>/recommended-products/<int:recommendation_product_id>", methods=["GET"])
 def get_recommendations(product_id, recommendation_product_id):
     """
     Retrieve recommendations for (product_id, recommendation_product_id)
@@ -114,7 +107,7 @@ def get_recommendations(product_id, recommendation_product_id):
 ##############################################################
 # UPDATE A RECOMMENDATION (RELATIONSHIP BETWEEN PRODUCTS)
 ######################################################################
-@app.route("/recommendations/products/<int:product_id>/related-products/<int:recommendation_product_id>", methods=["PUT"])
+@app.route("/recommendations/<int:product_id>/recommended-products/<int:recommendation_product_id>", methods=["PUT"])
 def update_recommendations(product_id, recommendation_product_id):
     """
     update a relationship
@@ -134,10 +127,31 @@ def update_recommendations(product_id, recommendation_product_id):
         jsonify(message), status.HTTP_200_OK
     )
 
+
+##############################################################
+# LIKE A RECOMMENDATION
+######################################################################
+@app.route("/recommendations/<int:product_id>/recommended-products/<int:recommendation_product_id>/like", methods=["PUT"])
+def like_recommendations(product_id, recommendation_product_id):
+    """
+    like a relationship
+    """
+    app.logger.info("Request to like a recommendation between %s and %s", product_id, recommendation_product_id)
+    recommendation = Recommendation.find(product_id, recommendation_product_id)
+    if not recommendation:
+        raise NotFound("Recommendation for product id {} and {} was not found.".format(product_id, recommendation_product_id))
+    
+    recommendation.likes += 1
+    recommendation.update()
+    message = recommendation.serialize()
+    return make_response(
+        jsonify(message), status.HTTP_200_OK
+    )
+
 ##############################################################
 # DELETE A RECOMMENDATION (RELATIONSHIP BETWEEN PRODUCTS)
 ######################################################################
-@app.route("/recommendations/products/<int:product_id>/related-products/<int:recommendation_product_id>", methods=["DELETE"])
+@app.route("/recommendations/<int:product_id>/recommended-products/<int:recommendation_product_id>", methods=["DELETE"])
 def delete_recommendations(product_id, recommendation_product_id):
     """
     Delete a relationship
@@ -159,7 +173,7 @@ def check_content_type(content_type):
 ######################################################################
 # QUERY RECOMMENDATIONS FOR ID AND TYPE
 ######################################################################
-@app.route("/recommendations/products/<int:product_id>", methods=["GET"])
+@app.route("/recommendations/<int:product_id>", methods=["GET"])
 def query_recommendations(product_id):
     """ Returns all of the Recommendations """
     type = request.args.get('type')

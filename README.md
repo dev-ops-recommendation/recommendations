@@ -1,5 +1,7 @@
 # DevOps Squad Project - Team Recommendations
 
+[![Build Status](https://travis-ci.com/dev-ops-recommendation/recommendations.svg?branch=main)](https://travis-ci.com/dev-ops-recommendation/recommendations)
+
 ## Introduction
  In this DevOps project, each team will have  RESTful microservice that will be developed based on a resource from an eCommerce application. This is the repository for Team Recommendations.
 
@@ -75,10 +77,11 @@ ACCESSORY
 Other kinds of relationships will result in ```Cannot create relationship``` error
 
 ### Read a recommendation between two product ids
-```GET http://0.0.0.0:5000/recommendations/products/1/related-products/2```   
+```GET http://0.0.0.0:5000/recommendations/1/recommended-products/2```   
 returns    
 ```
 {
+  "likes": 0,
   "product_id": 1,
   "recommendation_product_id": 2,
   "relationship": "UP_SELL"
@@ -87,7 +90,7 @@ returns
 If no relationship exits between given product ids, a 404 error will be issued  
 
 ### Update a recommendation between two product ids
-```PUT http://0.0.0.0:5000/recommendations/products/1/related-products/2``` 
+```PUT http://0.0.0.0:5000/recommendations/1/recommended-products/2``` 
 body  
 ```
 {
@@ -99,6 +102,7 @@ body
 returns    
 ```
 {
+  "likes": 0,
   "product_id": 1,
   "recommendation_product_id": 2,
   "relationship": "CROSS_SELL"
@@ -107,7 +111,7 @@ returns
 If no relationship exits between given product ids, a 404 error will be issued 
 
 ### Delete a recommendation between two product ids
-```DELETE http://0.0.0.0:5000/recommendations/products/1/related-products/2```
+```DELETE http://0.0.0.0:5000/recommendations/1/recommended-products/2```
 body
 ```
 {
@@ -116,13 +120,14 @@ body
   "relationship": "CROSS_SELL"
 }
 ```
-If no relationship exits between given product ids, a 404 error will be issued
 
-### List a recommendation between two product ids
-```GET http://0.0.0.0:5000/recommendations/products/1/related-products/2```
+
+### Read a recommendation between two product ids
+```GET http://0.0.0.0:5000/recommendations/1/recommended-products/2```
 body
 ```
 {
+  "likes": 0,
   "product_id": 1,
   "recommendation_product_id": 2,
   "relationship": "CROSS_SELL"
@@ -133,15 +138,17 @@ If no relationship exits between given product ids, a 404 error will be issued
 ### Query recommendation of a product id for a certain type
 Query endpoint takes a product id and relationship type. It will return empty list if no result or will return a list of relationship for input product_id and relationship type.   
 Example result after creating relationship {1,2,UP_SELL}, {1,10,UP_SELL}, {1,15,CROSS_SELL}  
-GET http://0.0.0.0:5000/recommendations/products/1?type=UP_SELL  
+GET http://0.0.0.0:5000/recommendations/1?type=UP_SELL  
 ```
 [
     {
+        "likes": 0,
         "product_id": 1,
         "recommendation_product_id": 2,
         "relationship": "UP_SELL"
     },
     {
+        "likes": 0,
         "product_id": 1,
         "recommendation_product_id": 10,
         "relationship": "UP_SELL"
@@ -149,7 +156,21 @@ GET http://0.0.0.0:5000/recommendations/products/1?type=UP_SELL
 ]
 ```
 
-### Stateful Action - Clear all data entries
+### Stateful Action - Like a Recommendation
+When a recommendation is created, like count is default to 0  
+To like an existing recommendation, call   
+```PUT http://0.0.0.0:5000/recommendations/1/recommended-products/2/like```   
+```
+{
+    "likes": 1,
+    "product_id": 1,
+    "recommendation_product_id": 2,
+    "relationship": "UP_SELL"
+}
+```
+
+
+### Clear all data entries
 To reset the database, simply call   
 DELETE http://0.0.0.0:5000/recommendations
 
