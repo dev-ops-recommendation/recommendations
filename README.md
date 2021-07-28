@@ -1,5 +1,6 @@
 # DevOps Squad Project - Team Recommendations
 
+<!-- test -->
 [![Build Status](https://travis-ci.com/dev-ops-recommendation/recommendations.svg?branch=main)](https://travis-ci.com/dev-ops-recommendation/recommendations)
 
 ## Introduction
