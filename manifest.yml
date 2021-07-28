@@ -1,7 +1,7 @@
 ---
 # This manifest deploys a Python Flask application with a Cloudant database
 applications:
-- name: nyu-recommendation-sum21
+- name: nyu-recommendation-service-sum21
   path: .
   instances: 2
   memory: 64M
@@ -12,7 +12,7 @@ applications:
   - python_buildpack
   timeout: 180
   services:
-  - Cloudant
+  - ElephantSQLRecommendations
   env:
     FLASK_APP : service:app
     FLASK_DEBUG : false
