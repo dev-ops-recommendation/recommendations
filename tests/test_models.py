@@ -10,7 +10,7 @@ from service.models import Recommendation, DataValidationError, db, Type
 from service import app
 from .factories import RecommendationFactory
 DATABASE_URI = os.getenv(
-    "DATABASE_URI", "postgres://postgres:postgres@localhost:5432/testdb"
+    "DATABASE_URI", "postgres://emcohncj:Dwci3tI6CiCP2N8NSprUNVxVKk7IvNTp@chunee.db.elephantsql.com/emcohncj"
 )
 ######################################################################
 #  RECOMMENDATIONS   M O D E L   T E S T   C A S E S
