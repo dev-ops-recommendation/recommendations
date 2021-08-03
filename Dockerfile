@@ -34,7 +34,7 @@ Vagrant.configure(2) do |config|
   # Forward Flask ports
   config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
   # Forward CouchDB ports
-  config.vm.network "forwarded_port", guest: 5984, host: 5984, host_ip: "127.0.0.1"
+  config.vm.network "forwarded_port", guest: 5432, host: 5432, host_ip: "127.0.0.1"
 
   config.vm.network "private_network", ip: "192.168.33.10"
 
@@ -105,14 +105,15 @@ Vagrant.configure(2) do |config|
     sudo -H -u vagrant sh -c '. ~/venv/bin/activate && cd /vagrant && pip install -r requirements.txt'
   SHELL
 
+
   ######################################################################
-  # Add CouchDB docker container
+  # Add PostgreSQL docker container for database
   ######################################################################
-  # docker run -d --name couchdb -p 5984:5984 -e COUCHDB_USER=admin -e COUCHDB_PASSWORD=pass couchdb
-  config.vm.provision "docker" do |d|
-    d.pull_images "couchdb"
-    d.run "couchdb",
-      args: "--restart=always -d --name couchdb -p 5984:5984 -v couchdb:/opt/couchdb/data -e COUCHDB_USER=admin -e COUCHDB_PASSWORD=pass"
+  # docker run -d --name postgres -p 5432:5432 -v psqldata:/var/lib/postgresql/data postgres
+  config.vm.provision :docker do |d|
+    d.pull_images "postgres:alpine"
+    d.run "postgres:alpine",
+       args: "-d --name postgres -p 5432:5432 -v psqldata:/var/lib/postgresql/data -e POSTGRES_PASSWORD=postgres"
   end
 
   ######################################################################
@@ -142,10 +143,10 @@ Vagrant.configure(2) do |config|
     echo "ibmcloud login -a https://cloud.ibm.com --apikey @~/.bluemix/apiKey.json -r us-south"
     echo "ibmcloud target --cf -o <your_org_here> -s dev"
     echo "\n************************************"
-    # Show the GUI URL for Couch DB
+    # Show the GUI URL for postgres DB
     echo "\n"
-    echo "CouchDB Admin GUI can be found at:\n"
-    echo "http://127.0.0.1:5984/_utils"
+    echo "postgres Admin GUI can be found at:\n"
+    echo "http://127.0.0.1:5432/_utils"
   SHELL
 
 end
