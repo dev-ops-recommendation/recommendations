@@ -9,8 +9,8 @@ import os
 from service.models import Recommendation, DataValidationError, db, Type
 from service import app
 from .factories import RecommendationFactory
-DATABASE_URI = os.getenv(
-    "DATABASE_URI", "postgres://emcohncj:Dwci3tI6CiCP2N8NSprUNVxVKk7IvNTp@chunee.db.elephantsql.com/emcohncj"
+TEST_DATABASE_URI = os.getenv(
+    "TEST_DATABASE_URI", "postgres://postgres:postgres@localhost:5432/testdb"
 )
 ######################################################################
 #  RECOMMENDATIONS   M O D E L   T E S T   C A S E S
@@ -23,7 +23,7 @@ class TestRecommendationModel(unittest.TestCase):
         """This runs once before the entire test suite"""
         app.config["TESTING"] = True
         app.config["DEBUG"] = False
-        app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
+        app.config["SQLALCHEMY_DATABASE_URI"] = TEST_DATABASE_URI
         app.logger.setLevel(logging.CRITICAL)
         Recommendation.init_db(app)
     @classmethod

@@ -17,8 +17,8 @@ import json
 
 BASE_URL = "/recommendations"
 CONTENT_TYPE_JSON = "application/json"
-DATABASE_URI = os.getenv(
-    "DATABASE_URI", "postgres://emcohncj:Dwci3tI6CiCP2N8NSprUNVxVKk7IvNTp@chunee.db.elephantsql.com/emcohncj"
+TEST_DATABASE_URI = os.getenv(
+    "TEST_DATABASE_URI", "postgres://postgres:postgres@localhost:5432/testdb"
 )
 ######################################################################
 #  T E S T   C A S E S
