@@ -17,8 +17,8 @@ import json
 
 BASE_URL = "/recommendations"
 CONTENT_TYPE_JSON = "application/json"
-DATABASE_URI = os.getenv(
-    "DATABASE_URI", "postgres://postgres:postgres@localhost:5432/testdb"
+TEST_DATABASE_URI = os.getenv(
+    "TEST_DATABASE_URI", "postgres://postgres:postgres@localhost:5432/testdb"
 )
 ######################################################################
 #  T E S T   C A S E S
@@ -32,7 +32,7 @@ class TestRecommendationServer(TestCase):
         app.config["TESTING"] = True
         app.config["DEBUG"] = False
         # Set up the test database
-        app.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URI
+        app.config["SQLALCHEMY_DATABASE_URI"] = TEST_DATABASE_URI
         app.logger.setLevel(logging.CRITICAL)
         Recommendation.init_db(app)
 
