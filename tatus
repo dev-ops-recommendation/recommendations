@@ -1,0 +1,736 @@
+[33mcommit e8b94cb31679ae75a96410d269e84f661bfd6234[m[33m ([m[1;36mHEAD -> [m[1;32mtest_build[m[33m, [m[1;31morigin/test_build[m[33m)[m
+Author: Mandy Xu <--global>
+Date:   Tue Aug 3 20:09:52 2021 +0000
+
+    use a testdb uri
+
+[33mcommit 11587a10e210bd1d845e80c3211d288b3f46d79b[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: Aurora1024 <1139405471@qq.com>
+Date:   Tue Aug 3 15:05:30 2021 -0400
+
+    modify application memory to 128
+
+[33mcommit dc652c5fe41881dcb78b3adf4b1c41f1aa742085[m
+Merge: 9e91d3d b082a34
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Wed Jul 28 14:36:57 2021 -0400
+
+    Merge pull request #76 from dev-ops-recommendation/fix-codecov-unknown
+    
+    Add codecov
+
+[33mcommit b082a342fa2c2c15272c6c0f26802518626fc9f4[m[33m ([m[1;31morigin/fix-codecov-unknown[m[33m)[m
+Author: Sarah <xiaowei.lin@outlook.com>
+Date:   Wed Jul 28 14:34:44 2021 -0400
+
+    Add codecov
+
+[33mcommit 9e91d3d1810fa161286180bd183f9607e501b013[m
+Author: Sarah <xiaowei.lin@outlook.com>
+Date:   Wed Jul 28 14:27:06 2021 -0400
+
+    uncomment codecov
+
+[33mcommit ae7f193fe34d7001d9aba2f9db313a7ab393c2fc[m
+Merge: f3cfa37 fd6ee84
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Wed Jul 28 14:26:00 2021 -0400
+
+    Merge pull request #75 from dev-ops-recommendation/codecov
+    
+    add codecov and badge
+
+[33mcommit fd6ee84558ff80d3eabdbd84f0e93d2c7753ae7a[m[33m ([m[1;31morigin/codecov[m[33m)[m
+Author: Sarah Lin <xiaowei.lin@outlook.com>
+Date:   Wed Jul 28 14:23:39 2021 -0400
+
+    add codecov and badge
+
+[33mcommit f3cfa37294f7214c09d6f907a8dd0ebc99db04ca[m
+Merge: 66532b2 2bd32df
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Wed Jul 28 13:57:53 2021 -0400
+
+    Merge pull request #72 from dev-ops-recommendation/error_handlers
+    
+    Add error handlers
+
+[33mcommit 2bd32df1c5fa550105de1decd5f6010d5b6ecd44[m[33m ([m[1;31morigin/error_handlers[m[33m, [m[1;32merror_handlers[m[33m)[m
+Author: YuyinZhang <zyy9871@126.com>
+Date:   Wed Jul 28 13:52:24 2021 -0400
+
+    Add import in routes.py
+
+[33mcommit 66532b2f976922e44fb8eb84a4353f8a0be40a36[m
+Merge: 5ec2593 b33725d
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Wed Jul 28 10:09:34 2021 -0400
+
+    Merge pull request #74 from dev-ops-recommendation/bdd_like
+    
+    add like bdd
+
+[33mcommit 5ec25931bc3486ee7f9427e667f92e05fd2dca9b[m
+Merge: e2776ad 408c1cb
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Tue Jul 27 23:43:49 2021 -0400
+
+    Merge pull request #62 from dev-ops-recommendation/cloud-foundry
+    
+    add files for cloud delpoyment
+
+[33mcommit 408c1cb934e449942f8dc8c55bf6b6b532a9fcf0[m[33m ([m[1;31morigin/cloud-foundry[m[33m, [m[1;32mcloud-foundry[m[33m)[m
+Author: Mandy Xu <--global>
+Date:   Tue Jul 27 23:40:30 2021 -0400
+
+    remove .idea dir
+
+[33mcommit b33725d8e9a33d2749af05067a555693e918459c[m[33m ([m[1;31morigin/bdd_like[m[33m)[m
+Author: Kefei Wu <1139405471@qq.com>
+Date:   Tue Jul 27 23:17:00 2021 -0400
+
+    delete vcs
+
+[33mcommit 8d58d4de38ef6599796ecfacf85bce97532eed0c[m
+Author: Kefei Wu <1139405471@qq.com>
+Date:   Tue Jul 27 23:16:37 2021 -0400
+
+    delete recommendations.iml
+
+[33mcommit 2e05b3ee10018f9c61b55442fb69da6470640252[m
+Author: Kefei Wu <1139405471@qq.com>
+Date:   Tue Jul 27 23:16:13 2021 -0400
+
+    delete modules
+
+[33mcommit 09107a25efd1deed65b22bc14c7914e5b08ea15c[m
+Author: Kefei Wu <1139405471@qq.com>
+Date:   Tue Jul 27 23:15:53 2021 -0400
+
+    delete misc.xml
+
+[33mcommit 5fcf60524b611368c08df6a96394c834adaeb925[m
+Author: Kefei Wu <1139405471@qq.com>
+Date:   Tue Jul 27 23:15:28 2021 -0400
+
+    Delete profiles_settings.xml
+
+[33mcommit eb583161e96b1cfdda5a343da57652428273ff35[m
+Author: Mandy Xu <--global>
+Date:   Tue Jul 27 22:47:24 2021 -0400
+
+    fix connection to db
+
+[33mcommit 4191cfebf8ea02caf6a77c38e546d4c8a7bb0d13[m
+Author: Aurora1024 <1139405471@qq.com>
+Date:   Tue Jul 27 22:34:43 2021 -0400
+
+    add secene
+
+[33mcommit e2776adc62c4da3c89e0ba0999a2e48b01c3f6c0[m
+Merge: 3e77bd4 a3d1afd
+Author: Sarah <xiaowei.lin@outlook.com>
+Date:   Tue Jul 27 21:27:13 2021 -0400
+
+    Merge pull request #73 from dev-ops-recommendation/flaky_tests
+    
+    fix flaky tests
+
+[33mcommit a3d1afd8479a41f1a712e660c5c4464ce8f4139c[m[33m ([m[1;31morigin/flaky_tests[m[33m, [m[1;32mflaky_tests[m[33m)[m
+Author: Mandy Xu <--global>
+Date:   Tue Jul 27 21:22:33 2021 -0400
+
+    fix flaky tests
+
+[33mcommit 60659698e91805319a7725deb8fa40324900fbbd[m
+Merge: 46306b9 0c82197
+Author: Mandy Xu <--global>
+Date:   Tue Jul 27 20:38:42 2021 -0400
+
+    Merge branch 'main' into cloud-foundry
+
+[33mcommit 3e77bd42cd73eee0e7e412a8f3fe8594ac9f07f1[m
+Merge: 0c82197 08bde0e
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Tue Jul 27 20:37:04 2021 -0400
+
+    Merge pull request #70 from dev-ops-recommendation/action_bdd
+    
+    Add like button on the UI
+
+[33mcommit 0c821979d2fc8ae9893c650c3e6809a33d9e8f3b[m
+Merge: 60f4998 0da84c9
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Tue Jul 27 20:27:02 2021 -0400
+
+    Merge pull request #69 from dev-ops-recommendation/bdd_query
+    
+    add update, query and delete case
+
+[33mcommit 08bde0e63606de60247625d035719070ea2b5b94[m[33m ([m[1;31morigin/action_bdd[m[33m, [m[1;32maction_bdd[m[33m)[m
+Author: Mandy Xu <--global>
+Date:   Tue Jul 27 15:32:09 2021 -0400
+
+    Add like button
+
+[33mcommit 938173af958f99d3aaf28b406d3bebdd5ecd47c5[m
+Author: Mandy Xu <emxxxm@gmail.com>
+Date:   Mon Jul 26 21:28:55 2021 -0400
+
+    add update, query and delete case
+
+[33mcommit 60f4998f489e4f1a20e6d8836a21f72bf307a66b[m
+Merge: e380716 0600eec
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Tue Jul 27 20:16:17 2021 -0400
+
+    Merge pull request #64 from dev-ops-recommendation/bdd_create
+    
+    Add Bdd create test case
+
+[33mcommit addb67d69ae7997936b53b02fe5daca395868582[m
+Author: YuyinZhang <zyy9871@126.com>
+Date:   Tue Jul 27 20:08:24 2021 -0400
+
+    Add error handlers
+
+[33mcommit e380716a6397653e93265d5e05d8d726dd500c78[m
+Merge: 9456391 5178830
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Tue Jul 27 19:42:52 2021 -0400
+
+    Merge pull request #68 from dev-ops-recommendation/travis
+    
+    Setup Travis CI
+
+[33mcommit 5178830e198d4a145e6489f993141a04b17f25f9[m
+Author: Sarah Lin <xiaowei.lin@outlook.com>
+Date:   Tue Jul 27 19:17:22 2021 -0400
+
+    add travis ci badge
+
+[33mcommit 15615b192bb415c6302926065925cd9a7e5f888f[m
+Author: Sarah Lin <xiaowei.lin@outlook.com>
+Date:   Tue Jul 27 19:04:30 2021 -0400
+
+    add .travis.yml file
+
+[33mcommit 945639169655c4bec15d15289c7df2d9cb268834[m
+Merge: b062976 d413bb2
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Tue Jul 27 10:13:04 2021 -0400
+
+    Merge pull request #66 from dev-ops-recommendation/like_action
+    
+    Like action
+
+[33mcommit d413bb2f7061cec07ada7e58304b25ba448c882f[m[33m ([m[1;31morigin/like_action[m[33m)[m
+Author: Mandy Xu <emxxxm@gmail.com>
+Date:   Mon Jul 26 22:00:23 2021 -0400
+
+    implement like action
+
+[33mcommit ca78c27630ad5cd2a477f4a0cdb5e2c71c299f3c[m
+Author: Mandy Xu <emxxxm@gmail.com>
+Date:   Mon Jul 26 21:28:19 2021 -0400
+
+    initial like action
+
+[33mcommit 0da84c98210fb2b02d6bf98e4888b873bb1c90db[m[33m ([m[1;31morigin/bdd_query[m[33m)[m
+Author: Mandy Xu <emxxxm@gmail.com>
+Date:   Mon Jul 26 21:28:55 2021 -0400
+
+    add update, query and delete case
+
+[33mcommit 0600eecf817a2013d5711e7111d82202666844d7[m[33m ([m[1;31morigin/bdd_update[m[33m, [m[1;31morigin/bdd_create[m[33m)[m
+Author: Mandy Xu <--global>
+Date:   Mon Jul 26 17:15:06 2021 -0400
+
+    Make VM memory large to run behave faster
+
+[33mcommit 6d15466cf3ef6c1098e9d324b8fe22dbf76b58fa[m
+Author: Mandy Xu <--global>
+Date:   Mon Jul 26 15:31:56 2021 -0400
+
+    Bdd create scenario
+
+[33mcommit 18c0db2b63551ee6a8a41bed63ba4f4ea7e20ef1[m
+Author: Mandy Xu <--global>
+Date:   Mon Jul 26 14:45:39 2021 -0400
+
+    Bdd create case
+
+[33mcommit b0629763e53920722dc8b5ce838cea3061056130[m
+Merge: fb6300e d4215a8
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Mon Jul 26 13:05:35 2021 -0400
+
+    Merge pull request #63 from dev-ops-recommendation/ui
+    
+    Create basic UI for bdd testing
+
+[33mcommit d4215a88b15d0d3e957374a48f59410d834eca63[m[33m ([m[1;31morigin/ui[m[33m, [m[1;32mui[m[33m)[m
+Author: Mandy Xu <--global>
+Date:   Mon Jul 26 12:43:03 2021 -0400
+
+    Fix typo
+
+[33mcommit 858f6280feec03aa91c509c973b1da1fc6a9ba97[m
+Author: Mandy Xu <--global>
+Date:   Mon Jul 26 12:40:57 2021 -0400
+
+    Create basic UI for bdd
+
+[33mcommit fb6300ef4f35ff344ed80760d9e9cc9c69a17b4c[m
+Merge: 6496a63 72967f1
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Fri Jul 23 14:51:48 2021 -0400
+
+    Merge pull request #60 from dev-ops-recommendation/api_path
+    
+    Refactor API path
+
+[33mcommit 46306b9bb7e1e7edf021fefb588f43ee56a7bbd0[m
+Author: Aurora1024 <1139405471@qq.com>
+Date:   Sun Jul 18 21:10:00 2021 -0400
+
+    add vagrant file setting
+
+[33mcommit 939f37cb1de4cf455c37367747faa9ac0ac106d7[m
+Author: Aurora1024 <1139405471@qq.com>
+Date:   Sun Jul 18 21:00:37 2021 -0400
+
+    add files for cloud delpoyment
+    
+    copy files from lab-bluemix-cf
+
+[33mcommit 72967f18c1906b4e6302f3dd5706c36cf5ae9c87[m[33m ([m[1;31morigin/api_path[m[33m, [m[1;32mapi_path[m[33m)[m
+Author: Mandy Xu <emxxxm@gmail.com>
+Date:   Wed Jul 14 21:58:31 2021 -0400
+
+    Refactor API path
+
+[33mcommit 6496a63fee33c1733b2ca59e82feee26c5a1a316[m
+Merge: b15bab1 5d442ce
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Wed Jul 7 18:42:34 2021 -0400
+
+    Merge pull request #33 from dev-ops-recommendation/refactor_field
+    
+    Refactor recommendation model
+
+[33mcommit 5d442ce87afab5979c2eaa4362ad813750bc5f1c[m[33m ([m[1;31morigin/refactor_field[m[33m, [m[1;32mrefactor_field[m[33m)[m
+Author: Mandy Xu <emxxxm@gmail.com>
+Date:   Wed Jul 7 15:57:45 2021 -0400
+
+    Refactor recommendation model
+
+[33mcommit b15bab1d11a44c21d3080a6ea719e9b140d4be81[m
+Merge: 929faed ce5c0bb
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Wed Jul 7 15:24:12 2021 -0400
+
+    Merge pull request #32 from dev-ops-recommendation/action
+    
+    [ISSUE-20] Implement clear database action
+
+[33mcommit ce5c0bbdca99d17ba46756d53df4dcb042e74ca0[m[33m ([m[1;31morigin/action[m[33m, [m[1;32maction[m[33m)[m
+Author: Mandy Xu <xiaomax@amazon.com>
+Date:   Wed Jul 7 15:00:36 2021 -0400
+
+    [ISSUE-20] Implement clear database action
+
+[33mcommit 929faed854a4b5a0c91c1c33e374825c47a181d3[m
+Merge: 1dbb3ed b1a877e
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Wed Jul 7 12:50:35 2021 -0400
+
+    Merge pull request #28 from dev-ops-recommendation/readme
+    
+    Update README.md
+
+[33mcommit b1a877ea7bc0b057b3347b25b790a31329537c8f[m[33m ([m[1;31morigin/readme[m[33m, [m[1;32mreadme[m[33m)[m
+Author: Mandy Xu <xiaomax@amazon.com>
+Date:   Wed Jul 7 12:48:52 2021 -0400
+
+    Add query doc
+
+[33mcommit 1dbb3ed8fff47742d0701681dd2644ed37e4b4db[m
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Wed Jul 7 11:25:51 2021 -0400
+
+    Query (#31)
+    
+    * [ISSUE-14]Implement query endpoint
+    
+    * [ISSUE-14]Fix test comments
+    
+    Co-authored-by: Mandy Xu
+
+[33mcommit 3d61b4a8b676a3f2d657154bcff37c5ed0d6d4df[m
+Author: Sarah Lin <xiaowei.lin@outlook.com>
+Date:   Wed Jul 7 08:11:33 2021 -0400
+
+    Update README
+
+[33mcommit fc3b87e2bc4e29eb0c1f17ad2211826255fc0dad[m
+Author: YuyinZhang <zyy9871@126.com>
+Date:   Tue Jul 6 17:54:44 2021 -0400
+
+    Add Delete in README.md
+
+[33mcommit 59aaac9b4b3ea1c7ad7f6c1c8a9805f9dc8bfbcc[m
+Author: Kefei Wu <1139405471@qq.com>
+Date:   Tue Jul 6 16:02:39 2021 -0400
+
+    Update README.md
+    
+    add update
+
+[33mcommit 375b694a483b7f38e7ff7e02008837f29afb5a2a[m
+Merge: 20a685b 3ca6757
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Tue Jul 6 13:03:22 2021 -0400
+
+    Merge pull request #26 from dev-ops-recommendation/list
+    
+    List Recommendations
+
+[33mcommit 3ca675797e9a00dd9438659abbfe950b83d7c20d[m[33m ([m[1;31morigin/list[m[33m, [m[1;32mlist[m[33m)[m
+Merge: 9315b85 20a685b
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Tue Jul 6 13:01:07 2021 -0400
+
+    Merge branch 'main' into list
+
+[33mcommit 20a685b7fb676df22d1c48870ae851ec45b62f06[m
+Merge: 81ed96b 5ab8559
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Tue Jul 6 12:52:05 2021 -0400
+
+    Merge pull request #29 from dev-ops-recommendation/update
+    
+    Update endpoint
+
+[33mcommit 5ab85591191f53d2c364e9909c0959a33353ae7a[m[33m ([m[1;31morigin/update[m[33m, [m[1;32mupdate[m[33m)[m
+Merge: fcf9b41 81ed96b
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Tue Jul 6 12:50:50 2021 -0400
+
+    Merge branch 'main' into update
+
+[33mcommit 9315b85060ae90d0e7fd5910fdc0b848ee6ca830[m
+Author: Sarah Lin <xiaowei.lin@outlook.com>
+Date:   Tue Jul 6 12:50:26 2021 -0400
+
+    correct error
+
+[33mcommit 63446681a80b12c95a83d7609a17f9901d248119[m
+Author: Sarah Lin <xiaowei.lin@outlook.com>
+Date:   Tue Jul 6 12:49:39 2021 -0400
+
+    clean up dead code
+
+[33mcommit b89844ad6b4a8d2442992130d81a5a6967506f74[m
+Author: Sarah Lin <xiaowei.lin@outlook.com>
+Date:   Tue Jul 6 12:36:15 2021 -0400
+
+    clean up code
+
+[33mcommit 4ade906f1c21372ce140925d7af02a185c6c2ade[m
+Author: Sarah Lin <xiaowei.lin@outlook.com>
+Date:   Tue Jul 6 12:33:29 2021 -0400
+
+    support list recommendations
+
+[33mcommit 02ed461185ce756abfb4e14bf2c617bf6d9dd86e[m
+Author: Sarah Lin <xiaowei.lin@outlook.com>
+Date:   Tue Jul 6 12:31:19 2021 -0400
+
+    support list recommendations
+
+[33mcommit add23917f74a041125f9eb43112a7b10d7286808[m
+Author: Sarah Lin <xiaowei.lin@outlook.com>
+Date:   Tue Jul 6 12:29:49 2021 -0400
+
+     Delete fields
+
+[33mcommit 6bf391d9aae87562e31f325bfdf6906ea0226c5e[m
+Author: Sarah Lin <xiaowei.lin@outlook.com>
+Date:   Tue Jul 6 12:27:53 2021 -0400
+
+    support list all recommendations
+
+[33mcommit fcf9b413e81984abb4b5e6e2b230175c70b0302c[m
+Author: Aurora1024 <1139405471@qq.com>
+Date:   Tue Jul 6 12:27:10 2021 -0400
+
+    delete useless code
+
+[33mcommit df7dc77ee9e2c1af6557f91b49f9213c665559df[m
+Author: Aurora1024 <1139405471@qq.com>
+Date:   Tue Jul 6 12:25:41 2021 -0400
+
+    Done
+
+[33mcommit 6f855374690956268edde6da756ea82bcd417c0e[m
+Author: Aurora1024 <1139405471@qq.com>
+Date:   Tue Jul 6 12:14:07 2021 -0400
+
+    need help with test_update_recommendation_no_relation_type
+    
+    pls look at test_routes line 171
+    test_update_recommendation_no_relation_type(self)
+
+[33mcommit ce39b18caf1360e213b46dd1981974697cf32eaa[m
+Author: Sarah Lin <xiaowei.lin@outlook.com>
+Date:   Tue Jul 6 11:02:24 2021 -0400
+
+    Add test cases for list recommendations
+
+[33mcommit aa6a8810cc41335517d41a63818c7580b5b42f60[m
+Author: Sarah Lin <xiaowei.lin@outlook.com>
+Date:   Tue Jul 6 10:55:31 2021 -0400
+
+    add test cases for list recommendations
+
+[33mcommit 5f82707ac1739a5d382ffba24cf3c8f2777be13c[m
+Author: Sarah Lin <xiaowei.lin@outlook.com>
+Date:   Tue Jul 6 10:53:35 2021 -0400
+
+    adding title, recommendation_type, active
+
+[33mcommit 81ed96bd8f541ce14bfbfbc1d36c2574e908add5[m
+Merge: 1dc3aab 85b78db
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Tue Jul 6 10:38:01 2021 -0400
+
+    Merge pull request #27 from dev-ops-recommendation/delete
+    
+    Implemented delete endpoint
+
+[33mcommit 548e4fd703827eaf5c681da91ab4d031102a401e[m
+Author: Aurora1024 <1139405471@qq.com>
+Date:   Tue Jul 6 01:27:26 2021 -0400
+
+    basic done
+    
+    14 tests run in 0.805 seconds (14 tests passed)
+
+[33mcommit 85b78db91ad2a49c450aaaf645e6a97debc8306a[m
+Author: YuyinZhang <zyy9871@126.com>
+Date:   Tue Jul 6 01:03:51 2021 -0400
+
+    Fix path
+
+[33mcommit 43beeff35590836ec48d2aee7985e8861b40a6c5[m
+Author: YuyinZhang <zyy9871@126.com>
+Date:   Mon Jul 5 20:05:33 2021 -0400
+
+    Add one more test
+
+[33mcommit db0250011249cfd7d8cd10f119427b56a7ac64c6[m
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Mon Jul 5 19:12:46 2021 -0400
+
+    Update README.md
+
+[33mcommit d8caae75b4ad9f7853ef24acf14eeb8ffe191cb9[m
+Author: YuyinZhang <zyy9871@126.com>
+Date:   Mon Jul 5 16:44:18 2021 -0400
+
+    Merge with find, fix errors
+
+[33mcommit 73f1ffe643b2cfb9f02d91eff7f900d4f5d531a9[m
+Merge: 47b727e 1dc3aab
+Author: YuyinZhang <zyy9871@126.com>
+Date:   Mon Jul 5 16:27:29 2021 -0400
+
+    Merge remote-tracking branch 'origin/main' into delete
+
+[33mcommit 47b727e46ee9bbe2010083f3a2914829bf78f32f[m
+Merge: e8fe78b 528c452
+Author: YuyinZhang <zyy9871@126.com>
+Date:   Mon Jul 5 16:26:23 2021 -0400
+
+    Merge remote-tracking branch 'origin/main' into delete
+
+[33mcommit 7444ffa24874dde9f23f94356be77df41fabebc3[m
+Author: Aurora1024 <1139405471@qq.com>
+Date:   Mon Jul 5 16:18:40 2021 -0400
+
+    update
+
+[33mcommit d23c5146ea250c2b808e1b06b142424ffba09f0f[m
+Author: Sarah Lin <xiaowei.lin@outlook.com>
+Date:   Mon Jul 5 11:01:30 2021 -0400
+
+    Add recommendation_type and active to class
+
+[33mcommit 1dc3aabf4bb7124a93b9fdd47bfb277eef23e37c[m
+Merge: 528c452 7d7c55d
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Mon Jul 5 10:31:41 2021 -0400
+
+    Merge pull request #25 from dev-ops-recommendation/read_endpoint
+    
+    Read endpoint
+
+[33mcommit 00cf677d015d8715fbbfe7fd6f2021984d0197a0[m
+Author: Sarah Lin <xiaowei.lin@outlook.com>
+Date:   Mon Jul 5 08:42:49 2021 -0400
+
+    Adding class methods
+
+[33mcommit ccefd63bc2aae855bc83868017a6e45cb533b0d8[m
+Author: Sarah Lin <xiaowei.lin@outlook.com>
+Date:   Mon Jul 5 08:08:03 2021 -0400
+
+     Adding list recommendations endpoint
+
+[33mcommit e8fe78bdc2d77bec089217f5b45bab2dc08ea77b[m
+Author: YuyinZhang <zyy9871@126.com>
+Date:   Mon Jul 5 01:17:43 2021 -0400
+
+    Implement delete endpoint
+
+[33mcommit 7d7c55d949319a3cf646931e7402b1b01a8e8c53[m
+Author: Mandy Xu <emxxxm@gmail.com>
+Date:   Sun Jul 4 18:16:40 2021 -0400
+
+    [ISSUE-19] Bug fix
+
+[33mcommit 528c45244bbba18ba4f35a4294329af0029422a2[m
+Merge: fd5fd45 f47e75c
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Sun Jul 4 18:02:04 2021 -0400
+
+    Merge pull request #24 from dev-ops-recommendation/bug-report
+    
+    Create a bug report template
+
+[33mcommit fd5fd45406dc64a7a1f3fff07f0ad50c7d940213[m
+Merge: 64bd402 eedcde4
+Author: zyy9871 <46951111+zyy9871@users.noreply.github.com>
+Date:   Sun Jul 4 14:55:21 2021 -0400
+
+    Merge pull request #23 from dev-ops-recommendation/create
+    
+    Implemented Create endpoint
+
+[33mcommit f47e75c6d1cda83c9133f143d310cce2eb9fb980[m
+Author: Sarah <xiaowei.lin@outlook.com>
+Date:   Sun Jul 4 14:24:32 2021 -0400
+
+    Create a bug report template
+
+[33mcommit 63f670cf482799bcdf04250ed64bd3af8d0e597d[m
+Author: Mandy Xu <emxxxm@gmail.com>
+Date:   Sat Jun 26 21:31:51 2021 -0600
+
+    [ISSUE-19] Implement Read endpoint
+
+[33mcommit eedcde40e8e2b4a6db47a999f51b219e11335667[m
+Author: Mandy Xu <emxxxm@gmail.com>
+Date:   Sat Jun 26 21:31:51 2021 -0600
+
+    [ISSUE-18] Implement CreateRecommendation endpoint
+
+[33mcommit 64bd4022c8e9880c74249f8705eecc7c07dc7a24[m
+Merge: 6be40d7 0184d81
+Author: Sarah <xiaowei.lin@outlook.com>
+Date:   Sat Jun 26 11:50:15 2021 -0400
+
+    Merge pull request #22 from dev-ops-recommendation/template
+    
+    [ISSUE-21] Copy project template
+
+[33mcommit 1f9ece986ca9d1c2eb30bb6eae81801153cb7704[m
+Author: Mandy Xu <emxxxm@gmail.com>
+Date:   Fri Jun 25 14:24:25 2021 -0400
+
+    Starter code for create operation
+
+[33mcommit 0184d81b8985e1763cfaae8a4b583e03d103b407[m[33m ([m[1;31morigin/template[m[33m)[m
+Author: Mandy Xu <emxxxm@gmail.com>
+Date:   Fri Jun 25 14:25:08 2021 -0400
+
+    Use falsk lab configuration file instead
+
+[33mcommit 667b7a8ef569f7dd572595d98e26237c805addb7[m
+Author: Mandy Xu <emxxxm@gmail.com>
+Date:   Fri Jun 25 12:05:02 2021 -0400
+
+    [ISSUE-21] Copy project template
+
+[33mcommit 6be40d7fc01a1be86276ae92ab0856e63c2daa76[m
+Author: Mandy Xu <xiaomax@amazon.com>
+Date:   Mon Jun 21 20:09:03 2021 -0400
+
+    Remove duplicate story template
+
+[33mcommit e1c1a5a7a27b8d60ec28b82dcd1700fe6466d175[m
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Mon Jun 21 20:04:08 2021 -0400
+
+    Update issue templates
+
+[33mcommit 6141ef907bee275a35bb7a0d7d67d9527dae7697[m
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Mon Jun 21 18:53:31 2021 -0400
+
+    Update story_template.md
+
+[33mcommit 8a3c0ca652e3567213fbdc9bd6462cd95ee268d5[m
+Author: Mandy Xu <xiaomax@amazon.com>
+Date:   Mon Jun 21 18:52:55 2021 -0400
+
+    Correct issues template directory
+
+[33mcommit 28908cddba9cc87dc383f3dcf779f158f0e8ad7d[m
+Author: Sarah <xiaowei.lin@outlook.com>
+Date:   Wed Jun 16 17:19:41 2021 -0400
+
+    Update README.md
+
+[33mcommit e8fa10f0fcaa4b52b2a5a5616e7ae76803bbde14[m
+Author: Sarah <xiaowei.lin@outlook.com>
+Date:   Wed Jun 16 17:18:53 2021 -0400
+
+    update readme
+
+[33mcommit 6dee9a9924300cb00f23e70eeafb34cd13c5106a[m
+Author: Mandy Xu <xiaomax@amazon.com>
+Date:   Tue Jun 15 17:30:42 2021 -0400
+
+    Create story template
+
+[33mcommit 88b89801aa6f74a8fa7acd227083b7bcea70ebfa[m
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Tue Jun 15 17:21:20 2021 -0400
+
+    Update README.md
+
+[33mcommit 55c10e722fc9cd38768b2d37759b2990ea42f53e[m
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Tue Jun 15 17:20:58 2021 -0400
+
+    Update README.md
+
+[33mcommit f175d6b7f2f16a9ad43f8d695606633cba586876[m
+Author: Sarah <xiaowei.lin@outlook.com>
+Date:   Mon Jun 14 15:38:58 2021 -0400
+
+    Update README.md
+
+[33mcommit 58238116a1629c63db9f631b83a59f3bc7b61292[m
+Author: Sarah <xiaowei.lin@outlook.com>
+Date:   Mon Jun 14 10:57:59 2021 -0400
+
+    Update README.md
+
+[33mcommit 2eea8346a30ab86225ab568525e40db9ee6bafc3[m
+Author: mandy-cmd <55009823+mandy-cmd@users.noreply.github.com>
+Date:   Mon Jun 14 10:19:13 2021 -0400
+
+    Initial commit
