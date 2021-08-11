@@ -17,7 +17,7 @@ from werkzeug.exceptions import NotFound, BadRequest
 # variety of backends including SQLite, MySQL, and PostgreSQL
 from flask_sqlalchemy import SQLAlchemy
 from service.models import Recommendation,Type, DataValidationError, DatabaseConnectionError
-from flask_restplus import Api, Resource, fields, reqparse
+from flask_restx import Api, Resource, fields, reqparse
 import service.error_handlers
 
 # Import Flask application
@@ -56,7 +56,7 @@ create_model = api.model('Recommendation', {
                           description='The id of a Product'),
     'recommendation_product_id': fields.Integer(required=True,
                               description='The id of the recommended product based on previous one'),
-    'relationship': fields.Type(required=True,
+    'relationship': fields.Integer(required=True,
                                  description='The recommendation type')
 })
 
@@ -65,7 +65,7 @@ recommendation_model = api.model('Recommendation', {
                           description='The id of a Product'),
     'recommendation_product_id': fields.Integer(required=True,
                               description='The id of the recommended product based on previous one'),
-    'relationship': fields.Type(required=True,
+    'relationship': fields.Integer(required=True,
                                  description='The recommendation type'),
     'like': fields.Integer(required=True,
                           description='Like a recommendation')
@@ -204,7 +204,7 @@ class RecommendationResource(Resource):
 #  PATH: /recommendations
 ######################################################################
 @api.route('/recommendations', strict_slashes=False)
-class PetCollection(Resource):
+class RecommendationCollection(Resource):
     """ Handles all interactions with collections of recommendations """
 
     ######################################################################
@@ -214,7 +214,6 @@ class PetCollection(Resource):
     @api.expect(recommendations_args, validate=True)
     @api.response(200, 'Recommendation are listed')
     @api.marshal_list_with(recommendation_model)
-    @app.route("/recommendations", methods=["GET"])
     def get(self):
         """ Returns all of the Recommendations """
         app.logger.info("Request for recommendations list")
@@ -268,14 +267,16 @@ class PetCollection(Resource):
 # LIKE A RECOMMENDATION
 #  PATH: /recommendations/<product_id>/recommended-products/<recommendation_product_id>/like
 ######################################################################
-@api.route('/recommendations/<product_id>/recommended-products/<recommendation_product_id>/like')
+@api.route('/recommendations/<product_id>/recommended-products/<recommendation_product_id>/like', strict_slashes=False)
 @api.param('product_id', 'The Product identifier')
 @api.param('recommendation_product_id', 'The recommended Product identifier')
 class LikeResource(Resource):
     """ Like actions on a recommendation """
     @api.doc('Like_pets')
+    @api.expect(recommendation_model)
     @api.response(404, 'Recommendation not found')
     @api.response(200, 'The recommendation is liked')
+    @api.marshal_list_with(recommendation_model)
     def like_recommendations(self, product_id, recommendation_product_id):
         """
         like a relationship
@@ -298,7 +299,7 @@ class LikeResource(Resource):
 # QUERY RECOMMENDATIONS FOR ID AND TYPE
 #  PATH: /recommendations/<product_id>/recommended-products/<recommendation_product_id>/like
 ######################################################################
-@api.route('/recommendations/<product_id>')
+@api.route('/recommendations/<product_id>', strict_slashes=False)
 @api.param('product_id', 'The Product identifier')
 class QueryResource(Resource):
     @api.doc('query_all_recommendations_by_ID_Type')
