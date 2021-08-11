@@ -124,7 +124,7 @@ def init_db():
 ######################################################################
 #  PATH: /recommendations/{product_id}/recommended-products/{recommendation_product_id}
 ######################################################################
-@api.route('/recommendations/<product_id>/recommended-products/<recommendation_product_id>')
+@api.route('/recommendations/<product_id>/recommended-products/<recommendation_product_id>', strict_slashes=False)
 @api.param('product_id', 'The Product identifier')
 @api.param('recommendation_product_id', 'The recommended Product identifier')
 class RecommendationResource(Resource):
@@ -245,7 +245,7 @@ class RecommendationCollection(Resource):
             raise BadRequest("Cannot create relationship between product {} and {}".format(recommendation.product_id, recommendation.recommendation_product_id))
 
         message = recommendation.serialize()
-        location_url = url_for("recommendation_resource", product_id=recommendation.product_id, recommendation_product_id=recommendation.recommendation_product_id, _external=True)
+        location_url = url_for(RecommendationResource, product_id=recommendation.product_id, recommendation_product_id=recommendation.recommendation_product_id, _external=True)
         return make_response(
             jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
         )
