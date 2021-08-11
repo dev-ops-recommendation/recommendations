@@ -245,7 +245,7 @@ class RecommendationCollection(Resource):
             raise BadRequest("Cannot create relationship between product {} and {}".format(recommendation.product_id, recommendation.recommendation_product_id))
 
         message = recommendation.serialize()
-        location_url = url_for("get_recommendations", product_id=recommendation.product_id, recommendation_product_id=recommendation.recommendation_product_id, _external=True)
+        location_url = url_for("recommendation_resource", product_id=recommendation.product_id, recommendation_product_id=recommendation.recommendation_product_id, _external=True)
         return make_response(
             jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
         )
