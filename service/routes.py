@@ -371,19 +371,19 @@ def abort(error_code: int, message: str):
     api.abort(error_code, message)
 
 @ app.before_first_request
-def init_db(dbname = "pets"):
+def init_db(dbname = "recommendations"):
     """ Initlaize the model """
-    Pet.init_db(dbname)
+    Recommendation.init_db(dbname)
 
 # load sample data
 def data_load(payload):
-    """ Loads a Pet into the database """
-    pet=Pet(payload['name'], payload['category'], payload['available'])
-    pet.create()
+    """ Loads a Recommendation into the database """
+    recommendation=Recommendation(payload['name'], payload['category'], payload['available'])
+    recommendation.create()
 
 def data_reset():
-    """ Removes all Pets from the database """
-    Pet.remove_all()
+    """ Removes all Recommendations from the database """
+    Recommendation.remove_all()
 
 def check_content_type(content_type):
     """ Checks that the media type is correct """
