@@ -1,4 +1,5 @@
 $(function () {
+    base_url = "api/recommendations"
     // ****************************************
     //  U T I L I T Y   F U N C T I O N S
     // ****************************************
@@ -43,7 +44,7 @@ $(function () {
 
         var ajax = $.ajax({
             type: "POST",
-            url: "/recommendations",
+            url: base_url,
             contentType: "application/json",
             data: JSON.stringify(data),
         });
@@ -78,7 +79,7 @@ $(function () {
 
         var ajax = $.ajax({
                 type: "PUT",
-                url: "/recommendations/" + product_id + "/recommended-products/" + recommendation_product_id,
+                url: base_url + "/" + product_id + "/recommended-products/" + recommendation_product_id,
                 contentType: "application/json",
                 data: JSON.stringify(data)
             })
@@ -105,7 +106,7 @@ $(function () {
 
         var ajax = $.ajax({
             type: "GET",
-            url: "/recommendations/" + product_id + "/recommended-products/" + recommendation_product_id,
+            url: base_url + "/" + product_id + "/recommended-products/" + recommendation_product_id,
             contentType: "application/json",
             data: ''
         })
@@ -135,7 +136,7 @@ $(function () {
 
         var ajax = $.ajax({
             type: "DELETE",
-            url: "/recommendations/" + product_id + "/recommended-products/" + recommendation_product_id,
+            url: base_url + "/" + product_id + "/recommended-products/" + recommendation_product_id,
             contentType: "application/json",
             data: '',
         })
@@ -144,9 +145,8 @@ $(function () {
             clear_form_data()
             flash_message("Recommendation has been Deleted!")
         });
-
         ajax.fail(function(res){
-            flash_message("Server error!")
+            flash_message(res.responseJSON.message)
         });
     });
 
@@ -162,7 +162,7 @@ $(function () {
 
         var ajax = $.ajax({
             type: "PUT",
-            url: "/recommendations/" + product_id + "/recommended-products/" + recommendation_product_id + "/like",
+            url: base_url + "/" + product_id + "/recommended-products/" + recommendation_product_id + "/like",
             contentType: "application/json",
             data: '',
         })
@@ -173,7 +173,7 @@ $(function () {
         });
 
         ajax.fail(function(res){
-            flash_message("Server error!")
+            flash_message(res.responseJSON.message)
         });
     });
 
@@ -207,7 +207,7 @@ $(function () {
 
         var ajax = $.ajax({
             type: "GET",
-            url: "/recommendations" + queryString,
+            url: base_url + queryString,
             contentType: "application/json",
             data: ''
         })

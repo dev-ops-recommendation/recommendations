@@ -53,6 +53,11 @@ class TestRecommendationModel(unittest.TestCase):
         self.assertEquals(recommendation.product_id, 1)
         self.assertEquals(recommendation.recommendation_product_id, 2)
 
+    def test_create_a_recommendation_missing_data(self):
+        """ Test create a recommendation """
+        recommendation = Recommendation(product_id=1, recommendation_product_id=None, relationship=Type.UP_SELL)
+        self.assertRaises(DataValidationError,recommendation.create)
+
     def test_delete_a_recommendation(self): 
         """ Delete a recommendation from the database """
         recommendation = RecommendationFactory()

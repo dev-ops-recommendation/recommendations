@@ -5,26 +5,8 @@
 ## Introduction
  In this DevOps project, each team will have  RESTful microservice that will be developed based on a resource from an eCommerce application. This is the repository for Team Recommendations.
 
-<!-- ## Recommendations
-The `recommendations resource` is a representation a product recommendation based on another product. 
-* It's essentially a relationship between two products that "go together" (e.g., radio and batteries, printers and ink, shirts and pants, etc.). 
-* It could also recommend based on what other customers have purchased like "customers who bought item A usually buy item B". 
-* Recommendations should have a recommendation type like cross-sell, upsell, accessory, etc. This way a product page could request all of the up-sells for a product.
-
-## Requirements 
-This is the list of expected functions:
-
-* List Resources
-* Read a Resource
-* Create a Resource
-* Update a Resource
-* Delete a Resource
-* Query Resources by some attribute of the Resource
-* Perform some stateful Action on the Resource -->
 ## How to Start Service
-<!-- Run ```vagrant up && vagrant ssh``` and then ```cd /vagrant```   
 
-<!-- Start server at 0.0.0.0:5000 ```FLASK_APP=service:app flask run -h 0.0.0.0``` -->
 
 ### Setup
 Download and Install [VirtualBox](https://www.virtualbox.org/) and [Vagrant](https://www.vagrantup.com/).
@@ -36,13 +18,22 @@ $ cd recommendations
 $ vagrant up
 $ vagrant ssh
 $ cd /vagrant
-$ FLASK_APP=service:app flask run -h 0.0.0.0
+$ honcho start
 ```
+The service will start at http://0.0.0.0:5000
+
+### Swagger Docs ###
+http://0.0.0.0:5000/apidocs
+
 ### Run TDD Unit Tests
 ```
 $ nosetests
 ```
 
+### Run UI Tests
+```
+$ behave
+```
 ### Terminate Service
 ```
 $ exit
@@ -53,7 +44,7 @@ $ vagrant halt
 
 ## Supported Operations
 ### Create a recommendation between two product ids
-```POST http://0.0.0.0:5000/recommendations```  
+```POST http://0.0.0.0:5000/api/recommendations```  
 body  
 ```
 {
@@ -74,10 +65,10 @@ CROSS_SELL
 UP_SELL
 ACCESSORY 
 ```  
-Other kinds of relationships will result in ```Cannot create relationship``` error
+Other kinds of relationships will result in ```Unsupported relationship``` error
 
 ### Read a recommendation between two product ids
-```GET http://0.0.0.0:5000/recommendations/1/recommended-products/2```   
+```GET http://0.0.0.0:5000/api/recommendations/1/recommended-products/2```   
 returns    
 ```
 {
@@ -90,7 +81,7 @@ returns
 If no relationship exits between given product ids, a 404 error will be issued  
 
 ### Update a recommendation between two product ids
-```PUT http://0.0.0.0:5000/recommendations/1/recommended-products/2``` 
+```PUT http://0.0.0.0:5000/api/recommendations/1/recommended-products/2``` 
 body  
 ```
 {
@@ -111,7 +102,7 @@ returns
 If no relationship exits between given product ids, a 404 error will be issued 
 
 ### Delete a recommendation between two product ids
-```DELETE http://0.0.0.0:5000/recommendations/1/recommended-products/2```
+```DELETE http://0.0.0.0:5000/api/recommendations/1/recommended-products/2```
 body
 ```
 {
@@ -123,7 +114,7 @@ body
 
 
 ### Read a recommendation between two product ids
-```GET http://0.0.0.0:5000/recommendations/1/recommended-products/2```
+```GET http://0.0.0.0:5000/api/recommendations/1/recommended-products/2```
 body
 ```
 {
@@ -138,7 +129,7 @@ If no relationship exits between given product ids, a 404 error will be issued
 ### Query recommendation of a product id for a certain type
 Query endpoint takes a product id and relationship type. It will return empty list if no result or will return a list of relationship for input product_id and relationship type.   
 Example result after creating relationship {1,2,UP_SELL}, {1,10,UP_SELL}, {1,15,CROSS_SELL}  
-GET http://0.0.0.0:5000/recommendations/1?type=UP_SELL  
+GET http://0.0.0.0:5000/api/recommendations/1?type=UP_SELL  
 ```
 [
     {
@@ -159,7 +150,7 @@ GET http://0.0.0.0:5000/recommendations/1?type=UP_SELL
 ### Stateful Action - Like a Recommendation
 When a recommendation is created, like count is default to 0  
 To like an existing recommendation, call   
-```PUT http://0.0.0.0:5000/recommendations/1/recommended-products/2/like```   
+```PUT http://0.0.0.0:5000/api/recommendations/1/recommended-products/2/like```   
 ```
 {
     "likes": 1,
@@ -172,9 +163,9 @@ To like an existing recommendation, call
 
 ### Clear all data entries
 To reset the database, simply call   
-DELETE http://0.0.0.0:5000/recommendations
+DELETE http://0.0.0.0:5000/api/recommendations
 
-All data entries will be cleared and GET http://0.0.0.0:5000/recommendations should return empty list now
+All data entries will be cleared and GET http://0.0.0.0:5000/api/recommendations should return empty list now
 
 
 

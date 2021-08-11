@@ -54,6 +54,12 @@ class Recommendation(db.Model):
         Creates a recommendation type to the database
         """
         logger.info("Creating %s between %s and %s", self.relationship, self.product_id, self.recommendation_product_id)
+        if not self.product_id or not self.recommendation_product_id or not self.relationship:
+            if self.product_id != 0 and self.recommendation_product_id != 0:
+                raise DataValidationError("Product id, recommendation product id and relationship required!")
+        if self.find(self.product_id, self.recommendation_product_id):
+            raise DataValidationError("Recommendation already exits")
+        
         db.session.add(self)
         db.session.commit()
 
@@ -62,8 +68,8 @@ class Recommendation(db.Model):
         """
         update a recommendation type to the database
         """
-        if not self.relationship:
-            raise DataValidationError("Update called with empty relationship")
+        if not self.product_id or not self.recommendation_product_id or not self.relationship:
+            raise DataValidationError("Product id, recommendation product id and relationship required!")
         logger.info("updating relationship between %s and %s", self.product_id, self.recommendation_product_id)
         db.session.commit()
         
@@ -118,6 +124,7 @@ class Recommendation(db.Model):
     def find(cls, product_id, recommendation_product_id):
         """ Finds relationship between two product ids """
         logger.info("Processing lookup for id %s %s", product_id, recommendation_product_id)
+        
         return cls.query.get((product_id, recommendation_product_id))
 
     @classmethod
@@ -130,6 +137,8 @@ class Recommendation(db.Model):
     def find_by_id_and_type(cls, product_id, type):
         """Returns all Recommendations with the given product id and type"""
         logger.info("Processing id and type query for id %s and type %s", product_id, type)
+        if not type:
+            raise DataValidationError("Type is required to query!")
         return cls.query.filter(cls.product_id == product_id).filter(cls.relationship == type)
 
     @classmethod

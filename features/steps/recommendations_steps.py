@@ -32,11 +32,11 @@ def step_impl(context):
     """ Delete all recommendations and load new ones """
     headers = {'Content-Type': 'application/json'}
     # Delete all recommendations
-    context.resp = requests.delete(context.base_url + '/recommendations', headers=headers)
+    context.resp = requests.delete(context.base_url + '/api/recommendations', headers=headers)
     expect(context.resp.status_code).to_equal(204)
     
     # load the database with new recommendations
-    create_url = context.base_url + '/recommendations'
+    create_url = context.base_url + '/api/recommendations'
     for row in context.table:
         data = {
             "product_id": row['product_id'],
