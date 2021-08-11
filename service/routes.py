@@ -211,7 +211,6 @@ class RecommendationCollection(Resource):
     # LIST RECOMMENDATIONS
     ######################################################################
     @api.doc('list_recommendations')
-    @api.expect(recommendations_args, validate=True)
     @api.response(200, 'Recommendation are listed')
     @api.marshal_list_with(recommendation_model)
     def get(self):
@@ -273,11 +272,10 @@ class RecommendationCollection(Resource):
 class LikeResource(Resource):
     """ Like actions on a recommendation """
     @api.doc('Like_pets')
-    @api.expect(recommendation_model)
     @api.response(404, 'Recommendation not found')
     @api.response(200, 'The recommendation is liked')
-    @api.marshal_list_with(recommendation_model)
-    def like_recommendations(self, product_id, recommendation_product_id):
+    @api.marshal_with(recommendation_model)
+    def put(self, product_id, recommendation_product_id):
         """
         like a relationship
         """
@@ -297,14 +295,15 @@ class LikeResource(Resource):
 
 ##############################################################
 # QUERY RECOMMENDATIONS FOR ID AND TYPE
-#  PATH: /recommendations/<product_id>/recommended-products/<recommendation_product_id>/like
+#  PATH: /recommendations/<product_id>
 ######################################################################
 @api.route('/recommendations/<product_id>', strict_slashes=False)
 @api.param('product_id', 'The Product identifier')
 class QueryResource(Resource):
     @api.doc('query_all_recommendations_by_ID_Type')
     @api.response(200, 'Get all recommendation of the product')
-    def query_recommendation(self,product_id):
+    @api.marshal_list_with(recommendation_model)
+    def get(self,product_id):
         """ Returns all of the Recommendations """
         type = request.args.get('type')
         app.logger.info("Request for recommendations query for id %s and type %s", product_id, type)
