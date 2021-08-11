@@ -98,7 +98,7 @@ class TestRecommendationServer(TestCase):
         logging.debug(test_recommendation)
         resp = self.app.post(
             "/recommendations", json=test_recommendation.serialize(), content_type="application/json"
-        )  
+        )
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
         # Make sure location header is set
         location = resp.headers.get("Location", None)
