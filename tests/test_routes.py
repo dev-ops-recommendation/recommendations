@@ -128,16 +128,17 @@ class TestRecommendationServer(TestCase):
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_create_recommendation_duplicate_data(self):
-        """ Create a Recommendation with missing data """
+        """ Create a Recommendation with duplicate data """
         test_recommendation = RecommendationFactory()
         logging.debug(test_recommendation)
-        self.app.post(
+        resp = self.app.post(
             "/api/recommendations", json=test_recommendation.serialize(), content_type="application/json"
-        )  
+        )
+        self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
         resp = self.app.post(
             "/api/recommendations", json=test_recommendation.serialize(), content_type="application/json"
         )  
-        self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(resp.status_code, status.HTTP_409_CONFLICT)
 
     def test_create_recommendation_no_content_type(self):
         """ Create a Recommendation with no content type """
@@ -196,7 +197,7 @@ class TestRecommendationServer(TestCase):
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_update_recommendation_no_content_type(self):
-        """ create a Recommendation with no content type """
+        """ update a Recommendation with no content type """
         resp = self.app.put("/api/recommendations/0/recommended-products/0")
         self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
@@ -265,7 +266,8 @@ class TestRecommendationServer(TestCase):
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
-        self.assertEqual(data["likes"], 1)
+        logging.debug('data = %s', data)
+        self.assertEqual(data['likes'], 1)
 
     def test_like_recommendation_not_found(self):
         """ Like a Recommendation thats not found """
