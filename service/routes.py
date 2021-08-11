@@ -277,7 +277,7 @@ class LikeResource(Resource):
     @api.response(404, 'Recommendation not found')
     @api.response(200, 'The recommendation is liked')
     @api.marshal_list_with(recommendation_model)
-    def like_recommendations(self, product_id, recommendation_product_id):
+    def put(self, product_id, recommendation_product_id):
         """
         like a relationship
         """
@@ -304,7 +304,7 @@ class LikeResource(Resource):
 class QueryResource(Resource):
     @api.doc('query_all_recommendations_by_ID_Type')
     @api.response(200, 'Get all recommendation of the product')
-    def query_recommendation(self,product_id):
+    def get(self,product_id):
         """ Returns all of the Recommendations """
         type = request.args.get('type')
         app.logger.info("Request for recommendations query for id %s and type %s", product_id, type)
