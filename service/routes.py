@@ -226,7 +226,7 @@ class RecommendationCollection(Resource):
     ######################################################################
     # ADD A NEW RECOMMENDATION (RELATIONSHIP BETWEEN PRODUCTS)
     ######################################################################
-    @api.doc('create_recommendations')
+    @api.doc('create_recommendations', security = 'apikey')
     @api.expect(create_model)
     @api.response(400, 'The posted data was not valid')
     @api.response(201, 'recommendations created successfully')
@@ -236,20 +236,14 @@ class RecommendationCollection(Resource):
         Creates a relationship
         This endpoint will create a relationship based the data in the body that is posted
         """
-        app.logger.info("Request to create a ")
-        check_content_type("application/json")
+        app.logger.info("Request to create a Recommendation")
         recommendation = Recommendation()
-        recommendation.deserialize(request.get_json())
-        try:
-            recommendation.create()
-        except:
-            raise BadRequest("Cannot create relationship between product {} and {}".format(recommendation.product_id, recommendation.recommendation_product_id))
-
-        message = recommendation.serialize()
-        location_url = url_for("get_recommendations", product_id=recommendation.product_id, recommendation_product_id=recommendation.recommendation_product_id, _external=True)
-        return make_response(
-            jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
-        )
+        app.logger.debug('Payload = %s', api.payload)
+        recommendation.deserialize(api.payload)
+        recommendation.create()
+        app.logger.info("recommendation between product id [%s] and id [%s] created!", recommendation.product_id, recommendation.recommendation_product_id)
+        location_url = api.url_for(RecommendationResource, product_id=recommendation.product_id, recommendation_product_id=recommendation.recommendation_product_id, _external=True)
+        return recommendation.serialize(), status.HTTP_201_CREATED, {'Location': location_url}
 
     ######################################################################
     # CLEAR ALL RECOMMENDATIONS

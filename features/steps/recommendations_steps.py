@@ -24,6 +24,7 @@ For information on Waiting until elements are present in the HTML see:
 """
 import json
 import requests
+from requests.api import request
 from behave import given
 from compare import expect
 
@@ -32,8 +33,12 @@ def step_impl(context):
     """ Delete all recommendations and load new ones """
     headers = {'Content-Type': 'application/json'}
     # Delete all recommendations
-    context.resp = requests.delete(context.base_url + '/recommendations', headers=headers)
-    expect(context.resp.status_code).to_equal(204)
+    context.resp = requests.get(context.base_url + '/recommendations')
+    expect(context.resp.status_code).to_equal(200)
+    for recommendation in context.resp.json():
+        context.resp = requests.delete(context.base_url + '/api/recommendations/' + str(recommendation["product_id"]) + \
+            'recommended-products' + str(recommendation["recommendation_product_id"]), headers=headers)
+        expect(context.resp.status_code).to_equal(204)
     
     # load the database with new recommendations
     create_url = context.base_url + '/recommendations'
