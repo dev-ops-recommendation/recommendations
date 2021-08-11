@@ -15,7 +15,7 @@ from service.models import db, Recommendation, Type
 from service.routes import app
 import json
 
-BASE_URL = "/recommendations"
+BASE_URL = "/api/recommendations"
 CONTENT_TYPE_JSON = "application/json"
 TEST_DATABASE_URI = os.getenv(
     "TEST_DATABASE_URI", "postgres://postgres:postgres@localhost:5432/testdb"
@@ -80,7 +80,7 @@ class TestRecommendationServer(TestCase):
         # get the id of a pet
         test_recommendation = self._create_recommendations(1)[0]
         resp = self.app.get(
-            "/recommendations/{}/recommended-products/{}".format(test_recommendation.product_id, test_recommendation.recommendation_product_id), content_type="application/json"
+            "/api/recommendations/{}/recommended-products/{}".format(test_recommendation.product_id, test_recommendation.recommendation_product_id), content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
@@ -88,7 +88,7 @@ class TestRecommendationServer(TestCase):
     
     def test_get_recommendation_not_found(self):
         """ Get a Recommendation thats not found """
-        resp = self.app.get("/recommendations/0/recommended-products/0")
+        resp = self.app.get("/api/recommendations/0/recommended-products/0")
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
 
@@ -116,13 +116,13 @@ class TestRecommendationServer(TestCase):
         """ Delete a recommendation """
         test_recommendation = self._create_recommendations(1)[0]
         resp = self.app.delete(
-            "/recommendations/{}/recommended-products/{}".format(test_recommendation.product_id, test_recommendation.recommendation_product_id),
+            "/api/recommendations/{}/recommended-products/{}".format(test_recommendation.product_id, test_recommendation.recommendation_product_id),
             content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(len(resp.data), 0)
         resp = self.app.get(
-            "/recommendations/{}/recommended-products/{}".format(test_recommendation.product_id, test_recommendation.recommendation_product_id),
+            "/api/recommendations/{}/recommended-products/{}".format(test_recommendation.product_id, test_recommendation.recommendation_product_id),
             content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
@@ -132,16 +132,16 @@ class TestRecommendationServer(TestCase):
         test_recommendation = RecommendationFactory()
         logging.debug(test_recommendation)
         self.app.post(
-            "/recommendations", json=test_recommendation.serialize(), content_type="application/json"
+            "/api/recommendations", json=test_recommendation.serialize(), content_type="application/json"
         )  
         resp = self.app.post(
-            "/recommendations", json=test_recommendation.serialize(), content_type="application/json"
+            "/api/recommendations", json=test_recommendation.serialize(), content_type="application/json"
         )  
         self.assertEqual(resp.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_create_recommendation_no_content_type(self):
         """ Create a Recommendation with no content type """
-        resp = self.app.post("/recommendations")
+        resp = self.app.post("/api/recommendations")
         self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
     
     def test_list_recommendations(self):
@@ -149,9 +149,9 @@ class TestRecommendationServer(TestCase):
         test_recommendation = RecommendationFactory()
         logging.debug(test_recommendation)
         resp = self.app.post(
-            "/recommendations", json=test_recommendation.serialize(), content_type="application/json"
+            "/api/recommendations", json=test_recommendation.serialize(), content_type="application/json"
         )  
-        resp = self.app.get("/recommendations")
+        resp = self.app.get("/api/recommendations")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         result = resp.get_json()
         self.assertEqual(len(result), 1)
@@ -167,7 +167,7 @@ class TestRecommendationServer(TestCase):
         test_recommendation = RecommendationFactory()
         logging.debug(test_recommendation)
         resp = self.app.post(
-            "/recommendations", json=test_recommendation.serialize(), content_type="application/json"
+            "/api/recommendations", json=test_recommendation.serialize(), content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
@@ -176,7 +176,7 @@ class TestRecommendationServer(TestCase):
         new_recommendation["relationship"] = "CROSS_SELL"
         logging.debug(new_recommendation)
         resp = self.app.put(
-            "/recommendations/{}/recommended-products/{}".format(test_recommendation.product_id,
+            "/api/recommendations/{}/recommended-products/{}".format(test_recommendation.product_id,
                                                                       test_recommendation.recommendation_product_id),
             json=new_recommendation,
             content_type="application/json"
@@ -191,13 +191,13 @@ class TestRecommendationServer(TestCase):
         test_recommendation.product_id = 0
         test_recommendation.recommendation_product_id = 0
         logging.debug(test_recommendation)
-        resp = self.app.put("/recommendations/0/recommended-products/0",json=test_recommendation.serialize(),
+        resp = self.app.put("/api/recommendations/0/recommended-products/0",json=test_recommendation.serialize(),
             content_type="application/json")
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_update_recommendation_no_content_type(self):
         """ create a Recommendation with no content type """
-        resp = self.app.put("/recommendations/0/recommended-products/0")
+        resp = self.app.put("/api/recommendations/0/recommended-products/0")
         self.assertEqual(resp.status_code, status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
 
     def test_query_recommendation_by_id_and_type(self):
@@ -206,14 +206,14 @@ class TestRecommendationServer(TestCase):
         test_recommendation = RecommendationFactory()
         logging.debug(test_recommendation)
         resp = self.app.post(
-            "/recommendations", json=test_recommendation.serialize(), content_type="application/json"
+            "/api/recommendations", json=test_recommendation.serialize(), content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
         # query the recommendation
         
         resp = self.app.get(
-            "/recommendations/{}?type={}".format(test_recommendation.product_id,
+            "/api/recommendations/{}?type={}".format(test_recommendation.product_id,
                                                                       test_recommendation.relationship.name)
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
@@ -226,18 +226,18 @@ class TestRecommendationServer(TestCase):
         self._create_recommendations(1)[0]
 
         #Expecting one recommendation
-        resp = self.app.get("/recommendations")
+        resp = self.app.get("/api/recommendations")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         result = resp.get_json()
         self.assertEqual(len(result), 1)
         
         #Calling clear the database
-        resp = self.app.delete("/recommendations")
+        resp = self.app.delete("/api/recommendations")
         self.assertEqual(resp.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(len(resp.data), 0)
 
         #Expecing 0 recommendation now
-        resp = self.app.get("/recommendations")
+        resp = self.app.get("/api/recommendations")
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         result = resp.get_json()
         self.assertEqual(len(result), 0)
@@ -249,19 +249,19 @@ class TestRecommendationServer(TestCase):
         test_recommendation = RecommendationFactory()
         
         resp = self.app.post(
-            "/recommendations", json=test_recommendation.serialize(), content_type="application/json"
+            "/api/recommendations", json=test_recommendation.serialize(), content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_201_CREATED)
 
         # like the recommendation
        
         resp = self.app.put(
-            "/recommendations/{}/recommended-products/{}/like".format(test_recommendation.product_id,
+            "/api/recommendations/{}/recommended-products/{}/like".format(test_recommendation.product_id,
                                                                       test_recommendation.recommendation_product_id),
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         resp = self.app.get(
-            "/recommendations/{}/recommended-products/{}".format(test_recommendation.product_id, test_recommendation.recommendation_product_id), content_type="application/json"
+            "/api/recommendations/{}/recommended-products/{}".format(test_recommendation.product_id, test_recommendation.recommendation_product_id), content_type="application/json"
         )
         self.assertEqual(resp.status_code, status.HTTP_200_OK)
         data = resp.get_json()
@@ -269,6 +269,6 @@ class TestRecommendationServer(TestCase):
 
     def test_like_recommendation_not_found(self):
         """ Like a Recommendation thats not found """
-        resp = self.app.put("/recommendations/0/recommended-products/0/like")
+        resp = self.app.put("/api/recommendations/0/recommended-products/0/like")
         self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
     

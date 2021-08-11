@@ -56,7 +56,7 @@ create_model = api.model('Recommendation', {
                           description='The id of a Product'),
     'recommendation_product_id': fields.Integer(required=True,
                               description='The id of the recommended product based on previous one'),
-    'relationship': fields.Integer(required=True,
+    'relationship': fields.String(required=True,
                                  description='The recommendation type')
 })
 
@@ -65,7 +65,7 @@ recommendation_model = api.model('Recommendation', {
                           description='The id of a Product'),
     'recommendation_product_id': fields.Integer(required=True,
                               description='The id of the recommended product based on previous one'),
-    'relationship': fields.Integer(required=True,
+    'relationship': fields.String(required=True,
                                  description='The recommendation type'),
     'like': fields.Integer(required=True,
                           description='Like a recommendation')
@@ -152,14 +152,13 @@ class RecommendationResource(Resource):
         app.logger.info("Request for relationship between product ids: %s %s", product_id, recommendation_product_id)
         recommendation = Recommendation.find(product_id, recommendation_product_id)
         if not recommendation:
-            raise NotFound(
-                "Recommendation for product id {} and {} was not found.".format(product_id, recommendation_product_id))
-        return make_response(jsonify(recommendation.serialize()), status.HTTP_200_OK)
+            abort(status.HTTP_404_NOT_FOUND, "Recommendation for product id {} and {} was not found.".format(product_id, recommendation_product_id))
+        return recommendation.serialize(), status.HTTP_200_OK
 
     ##############################################################
     # UPDATE A RECOMMENDATION (RELATIONSHIP BETWEEN PRODUCTS)
     ######################################################################
-    @api.doc('update_recommendations')
+    @api.doc('update_recommendations', security='apikey')
     @api.response(404, 'Recommendation not found')
     @api.expect(recommendation_model)
     @api.marshal_with(recommendation_model)
@@ -168,25 +167,22 @@ class RecommendationResource(Resource):
         update a relationship
         This endpoint will update a relationship based the data in the body that is posted
         """
-        app.logger.info("Request to update a ")
-        check_content_type("application/json")
-        recommendation = Recommendation()
-        recommendation.deserialize(request.get_json())
-        old_recommendation = recommendation.find( product_id, recommendation_product_id)
-        if not old_recommendation:
-            raise NotFound(
-                "Recommendation for product id {} and {} was not found.".format(product_id, recommendation_product_id))
-        old_recommendation.relationship = recommendation.relationship
+        app.logger.info("Request to update a recommendation between id [%s] and [%s]", product_id, recommendation_product_id)
+        recommendation = Recommendation.find( product_id, recommendation_product_id)
+        if not recommendation:
+            abort(status.HTTP_404_NOT_FOUND, "Recommendation for product id {} and {} was not found.".format(product_id, recommendation_product_id))
+        app.logger.debug('Payload = %s', api.payload)
+        data = api.payload
+        recommendation.deserialize(data)
+        recommendation.product_id = product_id
+        recommendation.recommendation_product_id = recommendation_product_id
         recommendation.update()
-        message = old_recommendation.serialize()
-        return make_response(
-            jsonify(message), status.HTTP_200_OK
-        )
+        return recommendation.serialize(), status.HTTP_200_OK
 
     ##############################################################
     # DELETE A RECOMMENDATION (RELATIONSHIP BETWEEN PRODUCTS)
     ######################################################################
-    @api.doc('delete_ recommendation')
+    @api.doc('delete_ recommendation', security='apikey')
     @api.response(204, ' recommendation deleted')
     def delete(self, product_id, recommendation_product_id):
         """
@@ -198,7 +194,8 @@ class RecommendationResource(Resource):
         recommendation = Recommendation.find(product_id, recommendation_product_id)
         if recommendation:
             recommendation.delete()
-        return make_response("", status.HTTP_204_NO_CONTENT)
+            app.logger.info('Relationship between product id [%s] and [%s] was deleted', product_id, recommendation_product_id)
+        return "", status.HTTP_204_NO_CONTENT
 
 ######################################################################
 #  PATH: /recommendations
@@ -220,7 +217,7 @@ class RecommendationCollection(Resource):
         recommendations = Recommendation.all()
 
         results = [recommendation.serialize() for recommendation in recommendations]
-        return make_response(jsonify(results), status.HTTP_200_OK)
+        return results, status.HTTP_200_OK
 
 
     ######################################################################
@@ -278,15 +275,13 @@ class LikeResource(Resource):
         app.logger.info("Request to like a recommendation between %s and %s", product_id, recommendation_product_id)
         recommendation = Recommendation.find(product_id, recommendation_product_id)
         if not recommendation:
-            raise NotFound(
-                "Recommendation for product id {} and {} was not found.".format(product_id, recommendation_product_id))
+            abort(status.HTTP_404_NOT_FOUND, "Recommendation for product id {} and {} was not found.".format(product_id, recommendation_product_id))
 
         recommendation.likes += 1
         recommendation.update()
+        app.logger.info("Recommendation between [%s] and [%s] is liked", product_id, recommendation_product_id)
         message = recommendation.serialize()
-        return make_response(
-            jsonify(message), status.HTTP_200_OK
-        )
+        return message, status.HTTP_200_OK
 
 
 ##############################################################
@@ -304,7 +299,7 @@ class QueryResource(Resource):
         app.logger.info("Request for recommendations query for id %s and type %s", product_id, type)
         recommendations = Recommendation.find_by_id_and_type(product_id, type)
         results = [recommendation.serialize() for recommendation in recommendations]
-        return make_response(jsonify(results), status.HTTP_200_OK)
+        return results, status.HTTP_200_OK
 
 
 def check_content_type(content_type):
